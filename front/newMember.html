@@ -3,15 +3,70 @@
     <head>
         <title>동국 기숙사</title>
         <link rel="stylesheet" type="text/css" href="project.css"/>
+        <style>
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            th, td {
+              border-bottom: 1px solid lightgray;
+              padding: 10px;
+            }
+          </style>
     </head>
     <body>
         <h1 style = "color :white">회원가입</h1>
         <h3 style = "background-color: lightgray;">>나의 정보</h3>
-        <p style = "color : white">&nbsp;&nbsp;&nbsp;이름 <input type = "text" name="name" size = "40" placeholder="내용을 입력해주세요" class = "signIn">
-        </p>
-        <hr style="background-color: lightgray;">
-        <p style = "color : white">&nbsp;&nbsp;&nbsp;이름 <input type = "text" name="name" size = "40" placeholder="내용을 입력해주세요" class = "signIn">
-        </p>
-        <hr style="background-color: lightgray;">
+        <table>
+            <tr>
+                <td style = "color : white">아이디 </td>
+                <td><input type = "text">
+                    <input type="button" value="중복확인">
+                </td>   
+            </tr>
+            <tr>
+                <td style = "color : white">비밀번호 </td>
+                <td><input type = "text"></td>
+            </tr>
+            <tr>
+            <td style = "color : white">이름 </td>
+                <td><input type = "text">
+                </td>
+            </tr>
+            <tr>
+                <td style = "color : white">닉네임 </td>
+                <td><input type = "text"></td>
+            </tr>
+            <tr>
+                <td style = "color : white">학과 </td>
+                <td><input type = "text"></td>
+            </tr>
+            <tr>
+                <td style = "color : white">학년 </td>
+                <td><input type = "text"></td>
+            </tr>
+            <tr>
+                <td style = "color : white">기숙사 </td>
+                <td><input type = "text"></td>
+            </tr>
+            <tr>
+                <td style = "color : white">나이 </td>
+                <td><input type = "text"></td>
+            </tr>
+            <tr>
+                <td style = "color : white">성별 </td>
+                <td><input type = "text"></td>
+            </tr>
+            <tr>
+                <td style = "color : white">국적 </td>
+                <td><input type = "text"></td>
+            </tr>
+        </table>
+        <br><br>
+        <form method = "post" action = "welcome.jsp">
+        <center>
+            <input type="submit" style = "width : 100pt; height:40pt"value="회원가입 완료">
+        </center>
+        </form>
     </body>
 </html>
