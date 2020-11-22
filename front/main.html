@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>동국 기숙사</title>
+    <link rel="stylesheet" type="text/css" href="project.css"/>
+    
+    <style type="text/css">
+body{
+margin:30px;
+}
+
+#choose{
+width: 300px;
+height: 150px;
+float: center;
+font-size: 20pt;
+left: 300px;
+}
+
+footer{
+clear:both;
+}
+
+
+table{
+padding:5px;
+width: 500px;
+height: 200px;
+border: 2px ridge #ff5722;
+}
+#board{
+float:left;
+margin:50px;
+
+}
+
+    </style>
+    
+</head>
+<body>
+  <frame>
+    <header>
+      <h1 style="margin:20pt;">나를 기다리는 룸메이트는 누구?~</h1>
+      <input id="choose" type="button" value="룸메이트 고르러 가자!" href="choose.jsp">
+      <div style="float:right">
+      <h3 style="margin:20pt;">'사용자'님 환영합니다!</h3><br>
+      <input type="button" value="마이 페이지" href="mypage.jsp">
+      <input type="button" value="로그아웃" href="login.jsp">
+      </div>
+    </header>
+
+    <content>
+      <div id="board">
+       <h3> 공지 게시판 </h3>
+        <table>
+          <tr>
+            <td> 리스트항목1 </td>
+          </tr>
+          <tr>
+            <td> 리스트항목2 </td>
+          </tr>
+          <tr>
+            <td> 리스트항목3 </td>
+          </tr>
+          <tr>
+            <td> 리스트항목4 </td>
+          </tr>
+          <tr>
+            <td> 리스트항목5 </td>
+          </tr>
+        </table> <br>
+<input type="button" value="공지 게시판 바로가기" href="notice.jsp">
+      </div>
+      <div id="board">
+      <h3> 민원 게시판 </h3>
+        <table>
+          <tr>
+            <td> 리스트항목1 </td>
+          </tr>
+          <tr>
+            <td> 리스트항목2 </td>
+          </tr>
+          <tr>
+            <td> 리스트항목3 </td>
+          </tr>
+            <td> 리스트항목4 </td>
+          </tr>
+          <tr>
+            <td> 리스트항목5 </td>
+          </tr>
+        </table> <br>
+<input type="button" value="민원 게시판 바로가기" href="complain.jsp">
+      </div>
+    </content>
+    
+    <footer>
+      <a href="http://www.dongguk.edu/"> 동국대학교 홈페이지 바로가기 </a>
+    </footer>
+  </frame>
+
+  
+</body>
+</html>

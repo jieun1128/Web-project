@@ -18,7 +18,47 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <style>
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        th, td {
+          background-color: #7c9ee7;
+          border-bottom: 1px solid #2168d1;
+          padding: 10px;
+        }
+        input[type=checkbox] {
+            display: none;
+        }
 
+        input[type=checkbox] + label {
+            display: inline-block;
+            position: relative;
+            padding: 8px;
+            background-color: #564949;
+            border: 1px solid #3E0E0D;
+            border-radius: 2px;
+            width: 8px;
+            top : 8px;
+            height: 6px;
+        }
+
+        input[type=checkbox]:checked + label {
+            top : 8px;
+            background-color: #564949;
+        }
+
+        input[type=checkbox]:checked + label:after {
+            position: absolute;
+            left: 4px;
+            top: -4px;
+            color: #FFB200; 
+            font-weight:900;
+            content: '\2714'; 
+            font-size: 18px;
+        } 
+      </style>
 </head>
 
 <body>
@@ -35,10 +75,10 @@
             </div>
 
             <ul class="list-unstyled components">
-                <li>
+                <li class="active">
                     <a href="#">룸메정보</a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="#">민원글</a> 
                 </li>
                 <li>
@@ -53,35 +93,35 @@
         </nav>
 
         <!-- Page Content  -->
-        <div id="content">
-
-
+        <div id = "user">
             <button type="button" id="sidebarCollapse" class="btn btn-info">
                 <i class="fas fa-align-left"></i>
                 <span>메뉴</span>
             </button>
-                    
             <br>
             <br>
-
-            <h1>민원글</h1>
-            
-            <div class="line"></div>
             <center>
-                <h1><b>게시글 목록 보기</b></h1>
-                 <table border="1" align="center" width="603px;">
-                 
-                 <tr style="background-color:Lightgray;">
-                   <td align="center" width="100">글번호</td>
-                   <td align="center" width="100">글쓴이</td>
-                   <td align="center"width="375">글제목</td>
-                   <td align="center" width="100">공감수</td>
-                 </tr>
+            <h1>룸메정보</h1>
+            </center>
+            <p style = "color : white"><input type="checkbox" id="chk1" name="chkdemo"   checked><label for="chk1"></label>   체크 O 남자/ X 여자</p> 
+            <p style = "color : white"><input type="checkbox" id="chk2" name="chkdemo"  ><label for="chk2"></label> 체크 O 남산/ X 충무</p>
+            <br><br>
+            <center>
+            <form method = "post" action = "member.jsp">
+            <table>
+                <tr>
+                    <td>User1<input type="submit" value = "User1" style = "width : 290px; opacity:0"></td>
+                </tr>
+                <tr>
+                    <td>User2<input type="submit" value = "User2" style = "width : 290px; opacity:0"></td>
+                </tr>
             </table>
-
-            <a href="Board-insert.jsp">게시글 쓰기</a>
+            </form>
 
             </center>
+        </div>
+        <div id="content" style = "background-color: white;">
+            
             
         </div>
     
