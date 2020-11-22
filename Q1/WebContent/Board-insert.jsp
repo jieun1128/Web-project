@@ -37,20 +37,17 @@
 
 
 <%
- 
    String flag = request.getParameter("flag");
    if("r".equals(flag)){%>
-   <input type="hidden" name="ref" value="<%=request.getParameter("ref") %>">
-   <input type="hidden" name="reply" value="y">
+   		<input type="hidden" name="ref" value="<%=request.getParameter("ref") %>">
+   		<input type="hidden" name="reply" value="y">
    <%} else %>
-   <input type="hidden" name="reply" value="n">
+   		<input type="hidden" name="reply" value="n">
   </form>
-   
-   <br>
+	
 <img src="image/green_tree.gif">
-
-
+<a href="board_list.jsp"> 게시글 목록 보기 </a><br>
+<img src="image/island.gif" width="95%">
 </center>
-
 </body>
 </html>

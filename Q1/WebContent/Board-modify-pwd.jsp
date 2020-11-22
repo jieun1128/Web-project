@@ -8,7 +8,7 @@
 </head>
 <body>
 	<center><h2>패스워드를 입력하시오.</h2>
-	<form action = "Board-modify.jsp" method="post">
+	<form action = "board_modify.jsp" method="post">
 		<table border="0">
 		<tr>
 			<td><img src="image/ball.gif">패스워드: </td>
@@ -22,7 +22,7 @@
 	</form>
 	
 	<img src = "image/green_tree.gif">
-	<a href="Board-read.jsp?id=<%= request.getParameter("id") %>">수정 취소</a>
+	<a href="board_read.jsp?id=<%= request.getParameter("id") %>">수정 취소</a>
 	
 	<img src = "image/island.gif" width="99%">
 	</center>
