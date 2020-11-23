@@ -3,15 +3,17 @@
 <head>
 <title>동국 기숙사</title>
 <link rel="stylesheet" type="text/css" href="project.css"/>
-    
+
 <style type="text/css">
 
 body{
 margin:30px;
 }
- 
+
 #head{
 float:left;
+position : relative;
+left: 50px;
 }
 
 #choose_btn{
@@ -22,9 +24,19 @@ font-size: 20pt;
 }
 
 #board{
+position: absolute;
+top : 200px;
 float:left;
 margin:50px;
 }
+#board2{
+position: absolute;
+top : 200px;
+float:left;
+left : 600px;
+margin:50px;
+}
+
 
 table{
 padding:5px;
@@ -38,10 +50,13 @@ border-radius: 1em;
 
 footer{
 clear:both;
+position : relative;
+top : 300px;
+left : 50px;
 }
 
 </style>
-    
+
 </head>
 
 
@@ -50,7 +65,7 @@ clear:both;
 
     <header>
      <div id="head">
-        <h1>동국대 기숙사 룸메 찾기</h1>
+        <h1 >동국대 기숙사 룸메 찾기</h1>
         <input type="image" src="dongguk.png">
      </div>
      <div id="head" style="margin-left: 300px;">
@@ -87,8 +102,10 @@ clear:both;
           </tr>
         </table> <br>
         <input type="button" value="공지 게시판 바로가기" href="notice.jsp">
+
       </div>
-      <div id="board">
+
+      <div id="board2">
         <br><br>
         <h3> 민원 게시판 </h3>
         <table>
@@ -111,12 +128,12 @@ clear:both;
         <input type="button" value="민원 게시판 바로가기" href="complain.jsp">
       </div>
     </content>
-    
+
     <footer>
       <br>
-      <a href="http://www.dongguk.edu/"> 동국대학교 홈페이지 바로가기 </a>
+      <a href="http://www.dongguk.edu/" > 동국대학교 홈페이지 바로가기 </a>
     </footer>
 
-  </frame> 
+  </frame>
 </body>
 </html>

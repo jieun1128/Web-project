@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import ="java.sql.*" %>
+<% request.setCharacterEncoding("utf-8"); %>
+<!DOCTYPE html> <!-- 공지글처럼!!!!!!! -->
 <html>
 
 <head>
@@ -38,10 +42,10 @@
                 <li>
                     <a href="#">룸메정보</a>
                 </li>
-                <li>
-                    <a href="#">민원글</a>
-                </li>
                 <li class="active">
+                    <a href="#">민원글</a> 
+                </li>
+                <li>
                     <a href="#">공지글</a>
                 </li>
                 <li>
@@ -49,7 +53,7 @@
                 </li>
             </ul>
 
-
+            
         </nav>
 
         <!-- Page Content  -->
@@ -60,17 +64,17 @@
                 <i class="fas fa-align-left"></i>
                 <span>메뉴</span>
             </button>
-
+                    
             <br>
             <br>
 
-            <h1>공지글</h1>
-
+            <h1>민원글</h1>
+            
             <div class="line"></div>
             <center>
                 <h1><b>게시글 목록 보기</b></h1>
                  <table border="1" align="center" width="603px;">
-
+                 
                  <tr style="background-color:Lightgray;">
                    <td align="center" width="100">글번호</td>
                    <td align="center" width="100">글쓴이</td>
@@ -82,9 +86,9 @@
             <a href="Board-insert.jsp">게시글 쓰기</a>
 
             </center>
-
+            
         </div>
-
+    
 
     <div class="overlay"></div>
 

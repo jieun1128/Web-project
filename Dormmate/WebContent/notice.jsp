@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import ="java.sql.*" %>
+<% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
 <html>
 
@@ -52,6 +56,8 @@
 
         </nav>
 
+
+
         <!-- Page Content  -->
         <div id="content">
 
@@ -78,13 +84,69 @@
                    <td align="center" width="100">공감수</td>
                  </tr>
             </table>
+			<%
+      int id,ref;
+      int rownum=0;
+      Connection conn = null;
+      Statement stmt = null;
+      String sql = null;
+      ResultSet rs = null;
+      %>
+      
+      <%
+      try{
+    	  Class.forName("com.mysql.jdbc.Driver");
+    	  String url = "jdbc:mysql://localhost:3306/wptest?serverTimezone=UTC"; // 바꾸기 
+    	  conn = DriverManager.getConnection(url,"root","0000"); // 바꾸기 
+    	  stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+    	  sql = "select * from board_tbl order by ref desc, id asc "; // 공지글 테이블에서 가져오기 
+    	  rs = stmt.executeQuery(sql);
+      }
+      
+      catch(Exception e ){
+    	  out.println("DB 연동 오류입니다. : " + e.getMessage());
+      }
+      
+      rs.last();
+      rownum = rs.getRow();
+      rs.beforeFirst();
+      
+      while(rs.next())
+      {
+    	 id = Integer.parseInt(rs.getString("id"));
+    	 ref = Integer.parseInt(rs.getString("ref"));
+    	  %>
+    	  
+    	  <tr>
+             <td align="center"><%= rownum %> </td>
+             <td align="left"><%=rs.getString("Name") %></td>
+             <td align="left"><% if (id!=ref) out.println("┖---→"); %>
+               <a href=Board-read.jsp?id=<%=rs.getString("id") %> style="width:250;"><%=rs.getString("title") %></a>
+             </td>
+             <td align="center"><%= rs.getString("E_mail") %></td>
+      
+            </tr>
+        
 
+      <%
+      
+           rownum--;
+      }
+      %>
+
+   
+      
+     </table>
+    	  
             <a href="Board-insert.jsp">게시글 쓰기</a>
 
             </center>
 
         </div>
-
+	<%
+     stmt.close();
+     conn.close();
+   %>
 
     <div class="overlay"></div>
 
