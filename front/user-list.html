@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>동국 기숙사</title>
+        <link rel="stylesheet" type="text/css" href="project.css"/>
+        <style>
+            .user_list{
+              height:100%;
+              width:30%;
+              background-color: #7F539B;
+              color:white;
+              align:left;
+              position: absolute;
+              left:0px;
+            }
+            .user_page{
+              background-color: white;
+              height:100%;
+              width:70%;
+              border-collapse: collapse;
+              align:right;
+              position: absolute;
+              right: 0px;
+            }
+            .user{
+              color: black;
+              height: 80px;
+              width: 280px;
+              background-color: white;
+              position: relative;
+              left:5px;
+
+            }
+            #user_profile{
+              height: 50px;
+              width: 50px;
+              position: relative;:
+              right: 5px;
+            }
+
+            th, td {
+              border-bottom: 1px solid lightgray;
+              padding: 10px;
+            }
+
+          </style>
+    </head>
+    <body>
+        <div class="user_list">  <!-- user 리스트-->
+          <input type="text" name="search" /> <br>
+          <input type="radio" name="search_value" value="recommend"> 추천 룸메이트 <br>
+          <input type="radio" name="search_value" value="on_search"> 매칭되지 않은 <br><br>
+
+
+              <table class="user">
+                <tr>
+                  <td>
+                      닉네임
+                  </td>
+                  <td>
+                    <img src="myface.jpg" id="user_profile"><br>
+                  </td>
+                </tr>
+               <tr>
+                 <td>
+                   충무학사 / 여 / 1학년
+                 </td>
+               </tr>
+             </table>
+
+        </div>
+        <div class="user_page">
+        <center>
+        <h3 style = "background-color: lightgray; color : black;">마이페이지</h3>
+        <img src="myface.jpg" alt="프로필이미지"/>
+
+        <table>
+            <tr>
+                <td> <h2> 동국대학교 충무학사 4인< </h2> </td>
+                </td>
+            </tr>
+            <td> 2020학년도 2학기 4개월</td>
+            <tr>
+              <td>공과대학</td>
+              <td>컴퓨터공학과</td>
+            </tr>
+            <tr>
+              <td>남자</td>
+              <td>24세</td>
+            </tr>
+            <tr>
+              <td>대한민국</td>
+              <td>3학년</td>
+            </tr>
+            <tr>
+              <td>
+                취침시간
+              </td>
+              <td>
+                A.M. 04:00 ~ P.M.12:00
+              </td>
+            </tr>
+        </table>
+          </center>
+        <br><br>
+        <form method = "post" action = "welcome.jsp">
+        <center>
+            <input type="button" style = "width : 100pt; height:40pt; background-color: #7F539B; color:white; font-style: bold;"value="채팅하기">
+            <input type="button" style = "width : 100pt; height:40pt; font-style: bold;"value="매칭요청">
+        </center>
+        </div
+
+    </body>
+</html>
