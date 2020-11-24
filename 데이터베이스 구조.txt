@@ -1,0 +1,116 @@
+회원정보 데이터베이스
+
+
+CREATE TABLE member(
+    -> id VARCHAR(15),
+    -> pwd VARCHAR(15),
+    -> major VARCHAR(20),
+    -> dorm VARCHAR(20),
+    -> age INT,
+    -> sex VARCHAR(5),
+    -> nation VARCHAR(10),
+    -> grade INT,
+    -> PRIMARY KEY(id)
+    -> );
+
+
+MariaDB [dormitory]> DESC member;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | varchar(15) | NO   | PRI | NULL    |       |
+| pwd    | varchar(15) | YES  |     | NULL    |       |
+| major  | varchar(20) | YES  |     | NULL    |       |
+| dorm   | varchar(20) | YES  |     | NULL    |       |
+| age    | int(11)     | YES  |     | NULL    |       |
+| sex    | varchar(5)  | YES  |     | NULL    |       |
+| nation | varchar(10) | YES  |     | NULL    |       |
+| grade  | int(11)     | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+8 rows in set (0.005 sec)
+
+민원글 데이터베이스
+CREATE TABLE complain(
+    -> id VARCHAR(15),
+    -> title VARCHAR(30),
+    -> content VARCHAR(1000),
+    -> idx INT,
+    -> agree INT,
+    -> disagree INT,
+    -> PRIMARY KEY(id)
+    -> );
+
+MariaDB [dormitory]> desc complain;
++----------+---------------+------+-----+---------+-------+
+| Field    | Type          | Null | Key | Default | Extra |
++----------+---------------+------+-----+---------+-------+
+| id       | varchar(15)   | NO   | PRI | NULL    |       |
+| title    | varchar(30)   | YES  |     | NULL    |       |
+| content  | varchar(1000) | YES  |     | NULL    |       |
+| idx      | int(11)       | YES  |     | NULL    |       |
+| agree    | int(11)       | YES  |     | NULL    |       |
+| disagree | int(11)       | YES  |     | NULL    |       |
++----------+---------------+------+-----+---------+-------+
+6 rows in set (0.004 sec)
+
+공지글 데이터베이스
+create table notify(
+    -> id VARCHAR(15),
+    -> title VARCHAR(30),
+    -> content VARCHAR(1000),
+    -> idx INT,
+    -> agree INT,
+    -> disagree INT,
+    -> PRIMARY KEY(id)
+    -> );
+
+
+MariaDB [dormitory]> desc notify;
++----------+---------------+------+-----+---------+-------+
+| Field    | Type          | Null | Key | Default | Extra |
++----------+---------------+------+-----+---------+-------+
+| id       | varchar(15)   | NO   | PRI | NULL    |       |
+| title    | varchar(30)   | YES  |     | NULL    |       |
+| content  | varchar(1000) | YES  |     | NULL    |       |
+| idx      | int(11)       | YES  |     | NULL    |       |
+| agree    | int(11)       | YES  |     | NULL    |       |
+| disagree | int(11)       | YES  |     | NULL    |       |
++----------+---------------+------+-----+---------+-------+
+6 rows in set (0.004 sec)
+
+본인 세부정보
+create table memberInfo(
+    -> washing INT,		//일주일에 씻는 횟수
+    -> drinking INT,		//한달에 음주 횟수
+    -> noise INT,		//시끄러운 정도
+    -> cleaning INT,		//일주일에 청소 횟수
+    -> sleptOut INT,		//한달에 외박 횟수
+    -> smoking INT,		//흡연 여부
+    -> religion INT,		//종교
+    -> closeness INT,		//룸메랑 친해지고 싶은 정도
+    -> address VARCHAR(100),	//오픈채팅 주소
+    -> id VARCHAR(15),		//아이디
+    -> PRIMARY KEY(id)
+    -> );
+
+MariaDB [dormitory]> desc memberInfo;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| washing   | int(11)      | YES  |     | NULL    |       |
+| drinking  | int(11)      | YES  |     | NULL    |       |
+| noise     | int(11)      | YES  |     | NULL    |       |
+| cleaning  | int(11)      | YES  |     | NULL    |       |
+| sleptOut  | int(11)      | YES  |     | NULL    |       |
+| smoking   | int(11)      | YES  |     | NULL    |       |
+| religion  | int(11)      | YES  |     | NULL    |       |
+| closeness | int(11)      | YES  |     | NULL    |       |
+| address   | varchar(100) | YES  |     | NULL    |       |
+| id        | varchar(15)  | NO   | PRI | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+10 rows in set (0.006 sec)
+
+
+
+
+
