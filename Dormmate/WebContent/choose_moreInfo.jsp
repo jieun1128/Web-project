@@ -39,39 +39,6 @@
             padding: 10px;
         }
         
-        input[type=checkbox] {
-            display: none;
-        }
-
-        input[type=checkbox] + label {
-            display: inline-block;
-            position: relative;
-            padding: 8px;
-            background-color: #564949;
-            border: 1px solid #3E0E0D;
-            border-radius: 2px;
-            width: 8px;
-            top : 8px;
-            height: 6px;
-        }
-
-        input[type=checkbox]:checked + label {
-            top : 8px;
-            background-color: #564949;
-        }
-
-        input[type=checkbox]:checked + label:after {
-            position: absolute;
-            left: 4px;
-            top: -4px;
-            color: #FFB200;
-            font-weight:900;
-            content: '\2714';
-            font-size: 18px;
-        }
-        
-
-        
       </style>
 </head>
 
@@ -102,7 +69,11 @@
                     <a href="main.jsp">홈화면</a>
                 </li>
             </ul>
-
+			<ul class="list-unstyled CTAs">
+                <li>
+                    <a href = "mypage.jsp" class="download">마이페이지</a>
+                </li>
+            </ul>
 
         </nav>
 	</div>
