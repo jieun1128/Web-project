@@ -2,32 +2,38 @@
 
 
 CREATE TABLE member(
-    -> id VARCHAR(15),
-    -> pwd VARCHAR(15),
-    -> major VARCHAR(20),
-    -> dorm VARCHAR(20),
-    -> age INT,
-    -> sex VARCHAR(5),
-    -> nation VARCHAR(10),
-    -> grade INT,
-    -> PRIMARY KEY(id)
-    -> );
+     id VARCHAR(15),
+     pwd VARCHAR(15),
+     name VARCHAR(20),
+     nickName VARCHAR(20),
+     major VARCHAR(20),
+     grade INT,
+     dorm VARCHAR(20),
+     age INT,
+     sex VARCHAR(5),
+     nation VARCHAR(10),
+     college VARCHAR(20),
+     PRIMARY KEY(id)
+     );
 
+MariaDB [dormitory]> desc member;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| id       | varchar(15) | NO   | PRI | NULL    |       |
+| pwd      | varchar(15) | YES  |     | NULL    |       |
+| name     | varchar(20) | YES  |     | NULL    |       |
+| nickName | varchar(20) | YES  |     | NULL    |       |
+| major    | varchar(20) | YES  |     | NULL    |       |
+| grade    | int(11)     | YES  |     | NULL    |       |
+| dorm     | varchar(20) | YES  |     | NULL    |       |
+| age      | int(11)     | YES  |     | NULL    |       |
+| sex      | varchar(5)  | YES  |     | NULL    |       |
+| nation   | varchar(10) | YES  |     | NULL    |       |
+| college  | varchar(20) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+10 rows in set (0.003 sec)
 
-MariaDB [dormitory]> DESC member;
-+--------+-------------+------+-----+---------+-------+
-| Field  | Type        | Null | Key | Default | Extra |
-+--------+-------------+------+-----+---------+-------+
-| id     | varchar(15) | NO   | PRI | NULL    |       |
-| pwd    | varchar(15) | YES  |     | NULL    |       |
-| major  | varchar(20) | YES  |     | NULL    |       |
-| dorm   | varchar(20) | YES  |     | NULL    |       |
-| age    | int(11)     | YES  |     | NULL    |       |
-| sex    | varchar(5)  | YES  |     | NULL    |       |
-| nation | varchar(10) | YES  |     | NULL    |       |
-| grade  | int(11)     | YES  |     | NULL    |       |
-+--------+-------------+------+-----+---------+-------+
-8 rows in set (0.005 sec)
 
 민원글 데이터베이스
 CREATE TABLE complain(

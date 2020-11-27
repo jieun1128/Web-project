@@ -7,6 +7,8 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: #7F539B;
     color : white;
+    width : 100%;
+    height : 100%;
 }
 
 p {
@@ -193,12 +195,12 @@ a.article:hover {
 #content2{
     width: 100%;
     padding: 20px;
-    min-height: 100vh;
-    transition: all 0.3s;
+    min-height: 200vh;
     position: absolute;
+   	height : 100%;
     top: 0;
     left : 400px;
-    right: 0;
+    
 }
 #user{
     width: 400px;

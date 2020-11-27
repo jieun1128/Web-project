@@ -27,11 +27,18 @@
           width: 100%;
           border-collapse: collapse;
         }
-        .chooseMember .thA, .tdA {
+        .chooseMember .thA .tdA {
           background-color: #7c9ee7;
           border-bottom: 1px solid #2168d1;
           padding: 10px;
         }
+        
+        #userpage .thB, .tdB {
+        	color : black;
+        	border-bottom: 1px solid lightgray;
+            padding: 10px;
+        }
+        
         input[type=checkbox] {
             display: none;
         }
@@ -62,6 +69,7 @@
             content: '\2714';
             font-size: 18px;
         }
+        
 
         
       </style>
@@ -110,14 +118,9 @@
             <h1>룸메정보</h1>
             </center>
             
-           <!--  <p style = "color : white"><input type="checkbox" id="chk1" name="chkdemo" value="남자"><label for="chk1"></label>남자 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-           	<input type="checkbox" id="chk2" name="chkdemo" value="여자"  ><label for="chk2"></label>여자</p>
-            <p style = "color : white"><input type="checkbox" id="chk3" name="chkdemo" value="남산학사" ><label for="chk3"></label>남산&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="checkbox" id="chk4" name="chkdemo" value="충무학사" ><label for="chk4"></label>충무</p> -->
-           
             <br><br>
             <center>
-            <table class= "chooseMember">
+            <table class = "chooseMember">
             <%
             	String id = "##";
             	String name;
@@ -125,6 +128,7 @@
             	Statement stmt = null;
             	String sql = null;
             	ResultSet rs = null;
+            
             	
             	try{
             		Class.forName("com.mysql.jdbc.Driver");
@@ -139,8 +143,8 @@
             	  while(rs.next())
                   {
             %>
-                <tr class = "trA">
-                    <td class = "tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("nickName") %></a></td>
+                <tr class="thA">
+                    <td class="tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("nickName") %></a></td>
                     <td class = "tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("dorm") %> / 
                     <%=rs.getString("sex") %> / <%=rs.getString("grade") %>학년</a></td>
                 </tr>
@@ -148,12 +152,54 @@
                   }
             %>
             </table> 
+           
 
             </center>
         </div>
         
+        <%
+		String value = request.getParameter("id");
+        sql = "select * from member where id = '" +value + "'";
+        rs = stmt.executeQuery(sql);
+		%>
 		<div id="content2" style = "background-color: white;">
+		<center>
+		<%
+		while(rs.next()){
+		%>
+		<h3 style = "background-color: lightgray; color : black;"> <%= rs.getString("nickName") %> </h3>
+			<img src="myface.jpg" alt="프로필이미지"/>
 		
+        <table id = "userpage">
+            <tr class = "thB">
+                <td class = "tdB"> <h2>동국대학교 <%= rs.getString("dorm")%></h2>  </td>
+            </tr>
+            <tr class = "thB">
+            <td class = "tdB"> 2020학년도 2학기 </td>
+            </tr>
+            <tr class = "thB">
+              <td class = "tdB">단과 대학 : <%= rs.getString("college")%></td>
+              <td class = "tdB">학과 : <%= rs.getString("major")%></td>
+            </tr>
+            <tr class = "thB">
+              <td class = "tdB">성별 : <%= rs.getString("sex")%></td>
+              <td class = "tdB">나이 : <%= rs.getInt("age")%></td>
+            </tr>
+            <tr class = "thB">
+              <td class = "tdB">국가 : <%= rs.getString("nation")%></td>
+              <td class = "tdB">학년 : <%= rs.getInt("grade")%>학년</td>
+            </tr>
+           
+        </table>
+        <%
+		}
+        %>
+        	<br><br>
+       	<form method="post" action="choose_moreInfo.jsp">
+            <input type="submit" style = "width : 100pt; height:40pt; font-style: bold;"value="더보기">
+        </form>
+          </center>
+        
 		</div>
 		
 
