@@ -90,16 +90,16 @@
 
             <ul class="list-unstyled components">
                 <li class="active">
-                    <a href="#">룸메정보</a>
+                    <a href="choose.jsp">룸메정보</a>
                 </li>
                 <li>
-                    <a href="#">민원글</a>
+                    <a href="complain.jsp">민원글</a>
                 </li>
                 <li>
-                    <a href="#">공지글</a>
+                    <a href="notice.jsp">공지글</a>
                 </li>
                 <li>
-                    <a href="#">홈화면</a>
+                    <a href="main.jsp">홈화면</a>
                 </li>
             </ul>
 
@@ -179,7 +179,6 @@
             </tr>
             <tr class = "thB">
               <td class = "tdB">단과 대학 : <%= rs.getString("college")%></td>
-              <td class = "tdB">학과 : <%= rs.getString("major")%></td>
             </tr>
             <tr class = "thB">
               <td class = "tdB">성별 : <%= rs.getString("sex")%></td>
@@ -191,13 +190,15 @@
             </tr>
            
         </table>
-        <%
-		}
-        %>
         	<br><br>
        	<form method="post" action="choose_moreInfo.jsp">
             <input type="submit" style = "width : 100pt; height:40pt; font-style: bold;"value="더보기">
+ 			<input type="hidden" name="id" value="<%= rs.getString("id")%>">
+ 			<input type="hidden" name="nickname" value="<%=rs.getString("nickName") %>">
         </form>
+        <%
+		}
+        %>
           </center>
         
 		</div>

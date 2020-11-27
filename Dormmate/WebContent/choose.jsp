@@ -82,16 +82,16 @@
 
             <ul class="list-unstyled components">
                 <li class="active">
-                    <a href="#">룸메정보</a>
+                    <a href="choose.jsp">룸메정보</a>
                 </li>
                 <li>
-                    <a href="#">민원글</a>
+                    <a href="complain.jsp">민원글</a>
                 </li>
                 <li>
-                    <a href="#">공지글</a>
+                    <a href="notice.jsp">공지글</a>
                 </li>
                 <li>
-                    <a href="#">홈화면</a>
+                    <a href="main.jsp">홈화면</a>
                 </li>
             </ul>
 
