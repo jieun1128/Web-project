@@ -1,12 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import ="java.sql.*" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
+<html lang="en" dir="ltr">
+  <head>
+   <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -23,9 +21,8 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
-</head>
-
-<body>
+  </head>
+  <body>
 
     <div class="wrapper">
         <!-- Sidebar  -->
@@ -56,6 +53,8 @@
 
         </nav>
 
+
+
         <!-- Page Content  -->
         <div id="content">
 
@@ -67,23 +66,31 @@
 
             <br>
             <br>
-
+ 
             <h1>공지글</h1>
 
             <div class="line"></div>
             <center>
-                <h1><b>게시글 목록 보기</b></h1>
+                <h1><b>게시글 목록 보기</b></h1> <br><br>
+                <input type="radio" name="sort_check" value="recent" checked="checked"> 최신순
+                <input type="radio" name="sort_check" value="agree"> 공감순
+                
                  <table border="1" align="center" width="603px;">
 
                  <tr style="background-color:Lightgray;">
                    <td align="center" width="100">글번호</td>
                    <td align="center" width="100">글쓴이</td>
                    <td align="center"width="375">글제목</td>
-                   <td align="center" width="50">공감수</td>
-                   <td align="center" width="50">비공감수</td>
+                   <td align="center" width="100">공감수</td>
                  </tr>
-<!-- 게시글 data 받아오기 -->
-      <%
+            </table>
+           
+			<%
+	  String radioValue = request.getParameter("sort_check");
+	  String selectsql;
+	  if(radioValue=="recent")	selectsql="select * from notice order by id asc";  
+	  else selectsql = "select * from notice order by agree desc id asc;";
+	  
       int id,ref;
       int rownum=0;
       Connection conn = null;
@@ -95,10 +102,10 @@
       <%
       try{
     	  Class.forName("com.mysql.jdbc.Driver");
-    	  String url = "jdbc:mysql://localhost:3306/wptest?serverTimezone=UTC";
-    	  conn = DriverManager.getConnection(url,"root","0000");
+    	  String url = "jdbc:mysql://localhost:3306/wptest?serverTimezone=UTC"; // 바꾸기 
+    	  conn = DriverManager.getConnection(url,"root","0000"); // 바꾸기 
     	  stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-    	  sql = "select * from notice order by talbeID asc";
+    	  sql = "select * from notice order by tableID asc"; 
     	  rs = stmt.executeQuery(sql);
       }
       
@@ -115,15 +122,14 @@
     	 id = Integer.parseInt(rs.getString("id"));
     	 ref = Integer.parseInt(rs.getString("ref"));
     	  %>
-          
-           <tr>
+    	  
+    	  <tr>
              <td align="center"><%= rownum %> </td>
-             <td align="left"><%=rs.getString("userID") %></td>
+             <td align="left"><%=rs.getString("Name") %></td>
              <td align="left">
-               <a href=notice-read.jsp?id=<%=rs.getString("talbeID") %> style="width:250;"><%=rs.getString("title") %></a>
+               <a href=notice-read.jsp?id=<%=rs.getString("id") %> style="width:250;"><%=rs.getString("title") %></a>
              </td>
-             <td align="center"><%= rs.getString("liked") %></td>
-             <td align="center"><%= rs.getString("disliked") %></td>
+             <td align="center"><%= rs.getString("agree") %></td>
       
             </tr>
         
@@ -132,17 +138,21 @@
       
            rownum--;
       }
-      %>    
-                 
-                 
-            </table>
+      %>
 
-            <a href="notice-insert.jsp"><button value="게시글 쓰기"></button></a>
+   
+      
+     </table>
+    	  
+            <a href="Board-insert.jsp">게시글 쓰기</a>
 
             </center>
 
         </div>
-
+	<%
+     stmt.close();
+     conn.close();
+   %>
 
     <div class="overlay"></div>
 
@@ -175,5 +185,4 @@
         });
     </script>
 </body>
-
 </html>
