@@ -36,53 +36,53 @@ MariaDB [dormitory]> desc member;
 
 
 민원글 데이터베이스
-CREATE TABLE complain(
-    -> id VARCHAR(15),
-    -> title VARCHAR(30),
-    -> content VARCHAR(1000),
-    -> idx INT,
-    -> agree INT,
-    -> disagree INT,
-    -> PRIMARY KEY(id)
-    -> );
+create table complain(
+     tableID INT not null,
+     userID varchar(15),
+     title VARCHAR(30),
+     content VARCHAR(1000),
+     agree INT,
+     disagree INT,
+     PRIMARY KEY(tableID)
+     );
 
-MariaDB [dormitory]> desc complain;
+mysql> desc complain;
 +----------+---------------+------+-----+---------+-------+
 | Field    | Type          | Null | Key | Default | Extra |
 +----------+---------------+------+-----+---------+-------+
-| id       | varchar(15)   | NO   | PRI | NULL    |       |
+| tableID  | int           | NO   | PRI | NULL    |       |
+| userID   | varchar(15)   | YES  |     | NULL    |       |
 | title    | varchar(30)   | YES  |     | NULL    |       |
 | content  | varchar(1000) | YES  |     | NULL    |       |
-| idx      | int(11)       | YES  |     | NULL    |       |
-| agree    | int(11)       | YES  |     | NULL    |       |
-| disagree | int(11)       | YES  |     | NULL    |       |
+| agree    | int           | YES  |     | NULL    |       |
+| disagree | int           | YES  |     | NULL    |       |
 +----------+---------------+------+-----+---------+-------+
-6 rows in set (0.004 sec)
+6 rows in set (0.01 sec)
 
 공지글 데이터베이스
-create table notify(
-    -> id VARCHAR(15),
-    -> title VARCHAR(30),
-    -> content VARCHAR(1000),
-    -> idx INT,
-    -> agree INT,
-    -> disagree INT,
-    -> PRIMARY KEY(id)
-    -> );
+create table notice(
+     tableID INT not null,
+     userID varchar(15),
+     title VARCHAR(30),
+     content VARCHAR(1000),
+     agree INT,
+     disagree INT,
+     PRIMARY KEY(tableID)
+     );
+// 수정: 테이블 간 구분/유저 당 여러 테이블 을 위해 primary key 값을 tableID로 하고 idx를 삭제함
 
-
-MariaDB [dormitory]> desc notify;
+mysql> desc notice;
 +----------+---------------+------+-----+---------+-------+
 | Field    | Type          | Null | Key | Default | Extra |
 +----------+---------------+------+-----+---------+-------+
-| id       | varchar(15)   | NO   | PRI | NULL    |       |
+| tableID  | int           | NO   | PRI | NULL    |       |
+| userID   | varchar(15)   | YES  |     | NULL    |       |
 | title    | varchar(30)   | YES  |     | NULL    |       |
 | content  | varchar(1000) | YES  |     | NULL    |       |
-| idx      | int(11)       | YES  |     | NULL    |       |
-| agree    | int(11)       | YES  |     | NULL    |       |
-| disagree | int(11)       | YES  |     | NULL    |       |
+| agree    | int           | YES  |     | NULL    |       |
+| disagree | int           | YES  |     | NULL    |       |
 +----------+---------------+------+-----+---------+-------+
-6 rows in set (0.004 sec)
+6 rows in set (0.01 sec)
 
 본인 세부정보
 create table memberInfo(
