@@ -25,10 +25,10 @@
             <td>ID</td> 
             <td><input type="text" name="id" placeholder="아이디"></td>
         </tr>
-        <tr>
+<!--          <tr>
              <td>어머니의 고향은?</td> 
              <td><input type="text" name="key" placeholder="어머니의 고향은?"></td>
-        </tr>
+        </tr>  -->
         </table>
         <br>
         <input type="submit" value="비밀번호 확인하기">

@@ -14,14 +14,13 @@
     <h1>동국 기숙사</h1>
     <br><br>
     <h3 >로그인</h3>
-    <form method="post" action="welcome.jsp">
+    <form method="post" action="loginCheck.jsp">
         <input type = "text" name="id" size = "40" placeholder="아이디"><br><br>
-        <input type="password" name="pwd" size = "40" placeholder="비밀번호"><br>
-        <br>
-        <input type="submit" value="로그인">
-        <input type="button" value="비밀번호 찾기" href="findPW.jsp">
-        <input type="button" value="회원가입" href = "newMember.jsp">
-    </form>
+        <input type="password" name="pw" size = "40" placeholder="비밀번호"><br><br>
+        <input type="submit" value="로그인"><br><br>
+        <input type="button" value="비밀번호 찾기" onClick="location.href='findPW.jsp' ">
+        <input type="button" value="회원가입"  onClick="location.href='newID.jsp' ">
+        </form>
 </center>
     
 </body>
