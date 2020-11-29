@@ -39,39 +39,6 @@
           </style>
     </head>
     <body>
-		<div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar">
-            <div id="dismiss">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="sidebar-header">
-                <h3>동국 기숙사</h3>
-            </div>
-
-            <ul class="list-unstyled components">
-                <li>
-                    <a href="choose.jsp">룸메정보</a>
-                </li>
-                <li>
-                    <a href="complain.jsp">민원글</a>
-                </li>
-                <li>
-                    <a href="notice.jsp">공지글</a>
-                </li>
-                <li>
-                    <a href="main.jsp">홈화면</a>
-                </li>
-            </ul>
-			<ul class="list-unstyled CTAs">
-                <li>
-                    <a href = "mypage.jsp" class="download">마이페이지</a>
-                </li>
-            </ul>
-
-        </nav>
-	</div>
         
         <div id="user">
         <button type="button" id="sidebarCollapse" class="btn btn-info">
@@ -80,8 +47,8 @@
             </button><br>
           <center><br>
           <%
-          	//String id = request.getParameter("id");
-          	String id = "RM";
+          	String id = request.getParameter("id");
+          	//String id = "Crystal";
           	String version;
 	      	Connection conn = null;
 	      	Statement stmt = null;
@@ -257,7 +224,43 @@
           </center>
         
 		</div>
+		
+		<div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div id="dismiss">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+
+            <div class="sidebar-header">
+                <h3>동국 기숙사</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="choose.jsp?id=<%=id %>">룸메정보</a>
+                </li>
+                <li>
+                    <a href="complain.jsp?id=<%=id %>">민원글</a>
+                </li>
+                <li>
+                    <a href="notice.jsp?id=<%=id %>">공지글</a>
+                </li>
+                <li>
+                    <a href="main.jsp?id=<%=id %>">홈화면</a>
+                </li>
+            </ul>
+			<ul class="list-unstyled CTAs">
+                <li>
+                    <a href = "mypage.jsp?id=<%=id %>" class="download">마이페이지</a>
+                </li>
+            </ul>
+
+        </nav>
+	</div>
+	
 		<div class="overlay"></div>
+		
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

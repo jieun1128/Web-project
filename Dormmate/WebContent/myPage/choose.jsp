@@ -22,61 +22,21 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-    <style>
+	  <style>
         #user .chooseMember {
           width: 100%;
           border-collapse: collapse;
         }
-        .chooseMember .thA .tdA {
+        .chooseMember .thA, .tdA {
           background-color: #7c9ee7;
           border-bottom: 1px solid #2168d1;
           padding: 10px;
         }
-        
-        #userpage .thB, .tdB {
-        	color : black;
-        	border-bottom: 1px solid lightgray;
-            padding: 10px;
-        }
-        
+       
       </style>
 </head>
 
 <body>
-
-    <div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar">
-            <div id="dismiss">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="sidebar-header">
-                <h3>동국 기숙사</h3>
-            </div>
-
-            <ul class="list-unstyled components">
-                <li class="active">
-                    <a href="choose.jsp">룸메정보</a>
-                </li>
-                <li>
-                    <a href="complain.jsp">민원글</a>
-                </li>
-                <li>
-                    <a href="notice.jsp">공지글</a>
-                </li>
-                <li>
-                    <a href="main.jsp">홈화면</a>
-                </li>
-            </ul>
-			<ul class="list-unstyled CTAs">
-                <li>
-                    <a href = "mypage.jsp" class="download">마이페이지</a>
-                </li>
-            </ul>
-
-        </nav>
-	</div>
         <!-- Page Content  -->
         <div id = "user">
             <button type="button" id="sidebarCollapse" class="btn btn-info">
@@ -91,31 +51,38 @@
             
             <br><br>
             <center>
-            <table class = "chooseMember">
+            <table class= "chooseMember">
             <%
-            	String id = "##";
-            	String name;
+            	String id = request.getParameter("id");
+            	//String id = "RM";
             	Connection conn = null;
             	Statement stmt = null;
             	String sql = null;
             	ResultSet rs = null;
-            
+            	String gender = "";
+            	String dorm = "";
             	
             	try{
             		Class.forName("com.mysql.jdbc.Driver");
             		String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
             		conn = DriverManager.getConnection(url,"root","0000");
             		stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-            		sql = "select * from member";
+            		sql = "select * from member where id = '"+id+"'";
             		rs = stmt.executeQuery(sql);
+            		while(rs.next()){
+            		dorm = rs.getString("dorm");
+            		gender = rs.getString("sex");
+            		}
+            		sql = "select * from member where dorm = '"+dorm+"' and sex = '"+gender+"'";
+            		rs=stmt.executeQuery(sql);
             	}catch(Exception e){
             		out.println("DB 연동 오류입니다. : " + e.getMessage());
             	}
             	  while(rs.next())
                   {
             %>
-                <tr class="thA">
-                    <td class="tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("nickName") %></a></td>
+                <tr class = "trA">
+                    <td class = "tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("nickName") %></a></td>
                     <td class = "tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("dorm") %> / 
                     <%=rs.getString("sex") %> / <%=rs.getString("grade") %>학년</a></td>
                 </tr>
@@ -123,115 +90,47 @@
                   }
             %>
             </table> 
-           
 
             </center>
         </div>
         
-        <%
-		String value = request.getParameter("id");
-        sql = "select * from memberInfo where id = '" +value + "'";
-        rs = stmt.executeQuery(sql);
-		%>
 		<div id="content2" style = "background-color: white;">
-		<center>
-		<%
-		while(rs.next()){
-		%>
-		<h3 style = "background-color: lightgray; color : black;"> <%= request.getParameter("nickname") %> </h3>
-			<img src="myface.jpg" alt="프로필이미지"/>
 		
-        <table id = "userpage">
-        	<tr class = "thB">
-        	  <td class = "tdB">
-        	  일주일에 씻는 횟수 
-        	  </td>
-        	  <td class = "tdB">
-        	  <%=rs.getInt("washing") %>번
-        	  </td>
-        	</tr>
-        	<tr class = "thB">
-        	  <td class = "tdB">
-        	  시끄러운 정도 (1~5사이) 
-        	  </td>
-        	  <td class = "tdB">
-        	  <%=rs.getInt("noise") %>
-        	  </td>
-        	</tr>
-        	<tr class = "thB">
-        	  <td class = "tdB">
-        	  일주일에 청소 횟수 
-        	  </td>
-        	  <td class = "tdB">
-        	  <%=rs.getInt("cleaning") %>번
-        	  </td>
-        	</tr>
-        	<tr class = "thB">
-        	  <td class = "tdB">
-        	  한달에 외박 횟수 
-        	  </td>
-        	  <td class = "tdB">
-        	  <%=rs.getInt("sleptOut") %>번
-        	  </td>
-        	</tr>
-        	<tr class = "thB">
-        	  <td class = "tdB">
-        	  흡연 여부 
-        	  </td>
-        	  <td class = "tdB">
-        	  <%
-        	   int smoke = Integer.parseInt(rs.getString("smoking"));
-        	  if(smoke == 0){
-        		  out.println("안함");
-        	  }else{
-        		  out.println("함");
-        	  }
-        	  %>
-        	  </td>
-        	</tr>
-        	<tr class = "thB">
-        	  <td class = "tdB">
-        	  종교
-        	  </td>
-        	  <td class = "tdB">
-        	  <%=rs.getString("religion") %>
-        	  </td>
-        	</tr>
-        	<tr class = "thB">
-        	  <td class = "tdB">
-        	  룸메와 친해지고 싶은 정도(1~5사이)
-        	  </td>
-        	  <td class = "tdB">
-        	  <%=rs.getInt("closeness") %>
-        	  </td>
-        	</tr>
-        	<tr class = "thB">
-              <td class = "tdB">
-                취침시간
-              </td>
-              <td class = "tdB">
-                <%=rs.getString("sleepTime") %> ~ <%=rs.getString("wakeTime") %>
-              </td>
-            </tr>
-            <tr class = "thB">
-        	  <td class = "tdB">
-        	  오픈 카톡 주소
-        	  </td>
-        	  <td class = "tdB">
-        	  <%=rs.getString("address") %>
-        	  </td>
-        	</tr>
-            
-           
-        </table>
-        <%
-		}
-        %>
-        	
-          </center>
-        
 		</div>
-		
+	
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div id="dismiss">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+
+            <div class="sidebar-header">
+                <h3>동국 기숙사</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="choose.jsp?id=<%=id %>">룸메정보</a>
+                </li>
+                <li>
+                    <a href="complain.jsp?id=<%=id %>">민원글</a>
+                </li>
+                <li>
+                    <a href="notice.jsp?id=<%=id %>">공지글</a>
+                </li>
+                <li>
+                    <a href="main.jsp?id=<%=id %>">홈화면</a>
+                </li>
+            </ul>
+			<ul class="list-unstyled CTAs">
+                <li>
+                    <a href = "mypage.jsp?id=<%=id %>" class="download">마이페이지</a>
+                </li>
+            </ul>
+
+        </nav>
+	</div>
 
     <div class="overlay"></div>
 

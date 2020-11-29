@@ -41,6 +41,9 @@
       	}
       	  while(rs.next())
             {
+      		  String grade = rs.getString("grade");
+      		  String dorm = rs.getString("dorm");
+      		  String gender = rs.getString("sex");
         %>
         <form method = "post" action = "compModifyInfo.jsp">
         <table>
@@ -63,11 +66,16 @@
             </tr>
             <tr>
                 <td>학년 </td>
-                <td><input type = "text" name="grade" value = <%=rs.getInt("grade") %>></td>
+                <td><input type = "radio" name="grade" value=<%if("1".equals(grade)){%>checked<%} %>> 1학년
+                	<input type = "radio" name="grade" value=<%if("2".equals(grade)){%>checked<%} %>> 2학년
+                	<input type = "radio" name="grade" value=<%if("3".equals(grade)){%>checked<%} %>> 3학년
+                	<input type = "radio" name="grade" value=<%if("4".equals(grade)){%>checked<%} %>> 4학년
+                </td>
             </tr>
             <tr>
                 <td>기숙사 </td>
-                <td><input type = "text" name="dorm" value = <%=rs.getString("dorm") %>></td>
+                <td><input type = "radio" name="dorm" value=<%if("남산학사".equals(dorm)){%>checked<%} %>> 남산학사
+                	<input type = "radio" name="dorm" value=<%if("충무학사".equals(dorm)){%>checked<%} %>> 충무학사</td>
             </tr>
             <tr>
                 <td>나이 </td>
@@ -75,7 +83,8 @@
             </tr>
             <tr>
                 <td>성별 </td>
-                <td><input type = "text" name="gender" value = <%=rs.getString("sex") %>></td>
+                <td><input type = "radio" name="gender" value=<%if("남자".equals(gender)){%>checked<%} %>> 남자
+                	<input type = "radio" name="gender" value=<%if("여자".equals(gender)){%>checked<%} %>> 여자</td>
             </tr>
             <tr>
                 <td >국적 </td>
