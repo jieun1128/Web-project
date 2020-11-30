@@ -12,7 +12,8 @@
 </head>
 <body>
 	<%
-		String id = request.getParameter("id");
+		String id = (String)session.getAttribute("id");	// session에 저장된 현재 로그인 한 이용자의 id를 불러온다.
+		// 각 세부 정보를 각각 맞는 변수에 저장해 둔다.
 		int washing = Integer.parseInt(request.getParameter("washing"));
 		int noise = Integer.parseInt(request.getParameter("noise"));
 		int cleaning = Integer.parseInt(request.getParameter("cleaning"));
@@ -34,6 +35,7 @@
 	  		String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
 	  		conn = DriverManager.getConnection(url,"root","0000");
 	  		stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+	  	// 수정 받은 정보를 불러와서 데이터베이스를 업데이트 하기 
 	  		sql_update = "update memberInfo set washing = '" + washing+"',noise = '"+noise+"',cleaning = '"+
 	  			     cleaning+"', sleptOut = '" + sleptOut +"', smoking = '" + smoking +"', religion = '" + religion +"', closeness = '" + closeness +
 	  			   "', address = '" + address +"', sleepTime = '" + sleepTime +"', wakeTime = '" + wakeTime +
@@ -46,7 +48,7 @@
 	%>
 <center>
 <br><br>
-<h3 >수정이 완료되었습니다.</h3>
+<h3 >수정이 완료되었습니다.</h3>	<!-- 돌아가기 -->
 <p><a href="mypage.jsp?id=<%=id %>" style="color: white">돌아가기</a></p>
 </center>
 </body>

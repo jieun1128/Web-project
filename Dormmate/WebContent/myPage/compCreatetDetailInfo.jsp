@@ -12,8 +12,9 @@
 </head>
 <body>
 	<%
-		String id = request.getParameter("id");
-		int washing = Integer.parseInt(request.getParameter("washing"));
+		String id = (String)session.getAttribute("id");		// session에 저장된 현재 로그인 한 이용자의 id를 불러온다.
+		// 각 세부 정보를 각각 맞는 변수에 저장해 둔다.
+		int washing = Integer.parseInt(request.getParameter("washing")); 
 		int noise = Integer.parseInt(request.getParameter("noise"));
 		int cleaning = Integer.parseInt(request.getParameter("cleaning"));
 		int sleptOut = Integer.parseInt(request.getParameter("sleptOut"));
@@ -38,6 +39,7 @@
 	  			     cleaning+"," + sleptOut +"," + smoking +",'" + religion +"'," + closeness +
 	  			   ",'" + address +"','" + id +"','" + sleepTime +
 	  			   "','" + wakeTime + "')";
+	  	// 입력 받은 정보를 불러와서 데이터베이스에 저장 하기 
 	  		stmt.executeUpdate(sql_update);
 	  	}catch(Exception e){
 	  		out.println("DB 연동 오류입니다. : " + e.getMessage());
@@ -46,7 +48,7 @@
 	%>
 <center>
 <br><br>
-<h3>생성이 완료되었습니다.</h3>
+<h3>생성이 완료되었습니다.</h3> <!-- 돌아가기 -->
 <p><a href="mypage.jsp?id=<%=id %>" style="color: white">돌아가기</a></p>
 </center>
 </body>

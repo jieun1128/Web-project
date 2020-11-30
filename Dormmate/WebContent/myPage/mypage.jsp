@@ -24,14 +24,14 @@
 	    
         <style>
             
-            .carrotbutton{
+            .carrotbutton{	/* 수정하기를 출력할 당근 느낌의 버튼 */
               width : 100pt; height:40pt;
               background-color: #CD853F;
               color:white;
               font-style: bold;
             }
 
-            th, td {
+            th, td {	/* 테이블 속성 */
               border-bottom: 1px solid lightgray;
               padding: 10px;
             }
@@ -47,13 +47,12 @@
             </button><br>
           <center><br>
           <%
-          	String id = request.getParameter("id");
-          	//String id = "Crystal";
-          	String version;
-	      	Connection conn = null;
-	      	Statement stmt = null;
-	      	String sql = null;
-	      	ResultSet rs = null;
+          	String id = (String)session.getAttribute("id"); 	// session에 저장된 현재 로그인 한 이용자의 id를 불러온다.
+          	String version;	// 세부사항에서 이미 입력된걸 수정하는건지 새로 입력하는건지 구분할 변수
+	      	Connection conn = null;	// DB연결
+	      	Statement stmt = null;	// DB연결
+	      	String sql = null;		// sql문
+	      	ResultSet rs = null;	// ResultSet
 	      
 	      	
 	      	try{
@@ -61,14 +60,14 @@
 	      		String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
 	      		conn = DriverManager.getConnection(url,"root","0000");
 	      		stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-	      		sql = "select * from member where id = '" + id + "'";
-	      		rs = stmt.executeQuery(sql);
+	      		sql = "select * from member where id = '" + id + "'";	// 데이터 베이스 연결 후 현재 이용자의 정보를 select 해 온다.
+	      		rs = stmt.executeQuery(sql);	// 쿼리해 온 정보를 rs에 저장
 	      	}catch(Exception e){
 	      		out.println("DB 연동 오류입니다. : " + e.getMessage());
 	      	}
 	      	  while(rs.next())
 	            {
-          %>
+          %>	<!-- 현재 로그인한 회원의 정보 출력  -->
           <h3> <%=rs.getString("nickName") %>의 마이페이지 </h3>
           <img src="myface.jpg" alt="프로필이미지"/><br><br><br>
           <table style = "color : white">
@@ -101,10 +100,9 @@
                   }
             %>
         </table>
-        <br>
+        <br>	 <!-- 현재 로그인한 회원의 기본정보를 수정하고 싶을때  -->
         <form method = "post" action = "modifyBase.jsp">
         	<input type="submit" class="carrotbutton" value="기본정보수정">
-        	<input type="hidden" name = "id" value="<%=id %>">
         </form>
           </center>
         </div>
@@ -116,13 +114,14 @@
           </caption>
           <%
         sql = "select * from memberInfo where id = '" +id + "'";
+          // 데이터 베이스에서 현재 로그인한 회원의 세부 정보 가져오기 
           try{
         	rs = stmt.executeQuery(sql);
           }catch(Exception e){
         	  out.println("DB 연동 오류입니다. : " + e.getMessage());
           }
        
-		if(rs.next()){
+		if(rs.next()){	// 회원에게 이미 등록된 세부정보가 있다면 version을 modify로 설정 후 해당 정보 출력
 			version = "modify";
 		%>
 		<table style = "color : black"><br><br>
@@ -207,7 +206,7 @@
         	</tr>
         </table>
             <%
-		}else{
+		}else{	// 데이터베이스에 해당 회원의 id로 등록된 세부 정보가 없다면 version을 create로 수정 후 세부정보 입력 요청 
 			version = "create";
 			%>
 			<h3 style="color:black">세부 정보 입력이 필요합니다.</h3>
@@ -215,9 +214,9 @@
           }
         %>
         <br><br>
+        <!-- 세부정보 수정 혹은 생성을 원할 경우 수정창으로 version 을 함께 넘겨주기-->
         <form method = "post" action = "modifyDetail.jsp">
 			<input type="submit" class="carrotbutton" value="세부정보수정">
-        	<input type="hidden" name = "id" value="<%=id %>">
         	<input type="hidden" name = "version"value = "<%=version%>">
             <br><br>
         </form>
@@ -229,30 +228,30 @@
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div id="dismiss">
-                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-left"></i>	<!-- 왼쪽 가리키는 화살표 아이콘 -->
             </div>
 
-            <div class="sidebar-header">
+            <div class="sidebar-header">	<!-- 사이드바의 맨 위에 동국 기숙사 출력  -->
                 <h3>동국 기숙사</h3>
             </div>
 
-            <ul class="list-unstyled components">
+            <ul class="list-unstyled components">	<!-- 사이드 바를 통해 이동 가능한 페이지의 목록이다. -->
                 <li>
-                    <a href="choose.jsp?id=<%=id %>">룸메정보</a>
+                    <a href="choose.jsp">룸메정보</a>
                 </li>
                 <li>
-                    <a href="complain.jsp?id=<%=id %>">민원글</a>
+                    <a href="complain.jsp">민원글</a>
                 </li>
                 <li>
-                    <a href="notice.jsp?id=<%=id %>">공지글</a>
+                    <a href="notice.jsp">공지글</a>
                 </li>
                 <li>
-                    <a href="main.jsp?id=<%=id %>">홈화면</a>
+                    <a href="main.jsp">홈화면</a>
                 </li>
             </ul>
-			<ul class="list-unstyled CTAs">
+			<ul class="list-unstyled CTAs">		<!-- 마이페이지는 페이지 목록 밑에 따로 버튼을 만들어 둔다. -->
                 <li>
-                    <a href = "mypage.jsp?id=<%=id %>" class="download">마이페이지</a>
+                    <a href = "mypage.jsp" class="download">마이페이지</a>
                 </li>
             </ul>
 
@@ -272,17 +271,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function () {		/* 사이드바 스크롤 설정 */
             $("#sidebar").mCustomScrollbar({
                 theme: "minimal"
             });
 
-            $('#dismiss, .overlay').on('click', function () {
+            $('#dismiss, .overlay').on('click', function () {	/* 뒤로 가기 화살표 버튼을 눌렀을 때 */
                 $('#sidebar').removeClass('active');
                 $('.overlay').removeClass('active');
             });
 
-            $('#sidebarCollapse').on('click', function () {
+            $('#sidebarCollapse').on('click', function () {		/* 메뉴 버튼을 눌렀을 때 */
                 $('#sidebar').addClass('active');
                 $('.overlay').addClass('active');
                 $('.collapse.in').toggleClass('in');
