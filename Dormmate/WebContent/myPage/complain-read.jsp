@@ -1,12 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import ="java.sql.*" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
+<html lang="en" dir="ltr">
+  <head>
+   <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -23,10 +21,80 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
-</head>
+  </head>
+  <body>
 
-<body>
+        <!-- Page Content  -->
+        <div id="content">
+<%
 
+	 
+	 String userID = "", title = "", content = "";
+	 int agree=0, disagree=0;
+     Connection conn = null;
+	 Statement stmt = null;
+	 ResultSet rs = null;
+  
+	 int tableID = Integer.parseInt(request.getParameter("tableID"));
+     String id = (String)request.getParameter("id");// 변경 
+
+	 try {
+               Class.forName("com.mysql.jdbc.Driver");
+               String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
+               conn = DriverManager.getConnection(url, "root", "0000");
+               stmt = conn.createStatement();
+               String sql = "select * from complain where tableID = " + tableID;
+               rs = stmt.executeQuery(sql);
+         }
+         catch(Exception e) {
+               out.println("DB 연동 오류입니다. : " + e.getMessage());
+         } 
+
+         while(rs.next())  {
+	       userID = rs.getString("userID");
+	       title = rs.getString("title");
+	       content = rs.getString("content");
+	       agree = rs.getInt("agree");
+	       disagree = rs.getInt("disagree");
+	 }
+    %>     
+    <center>
+
+     <br><br><br>
+	<h2><%= title %></h2>
+    <br>
+        작성자: <%= userID %> <br>
+    <%
+    int like=0; // 동의 비동의 눌렀는지
+    int disliked=0;
+    %>
+    <input type="image" src="agree.png" style="width: 50px; height: 50px;""> 
+    <input type="image" src="disagree.png" style="width: 50px; height: 50px;""> <br>
+
+       동의  : <%= agree %> | 비동의 : <%= disagree %>
+           
+    <div class="line"></div>
+
+	<div style="background-color:#F0E6FD ; color:black; width:60%; height: 400px; align: center;">
+  <%= content %>
+
+ </div>
+ 
+ <br><br><br>
+<% if(userID.equals(id)){ %>
+     <a href="board-modify.jsp?tableID=<%=tableID%>&board=2"> <button>게시글 수정</button> </a>    
+
+    <a href="board-delete-db.jsp?tableID=<%=tableID%>&board=2"> <button>게시글 삭제 </button> </a>
+<% } %>    
+    <a href="complain.jsp"> <button>게시글 목록 보기 </button></a>
+  </center>
+        </div>
+	<%
+     stmt.close();
+     conn.close();
+   %>
+
+       <!-- Sidebar  -->
     <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar">
@@ -39,78 +107,28 @@
             </div>
 
             <ul class="list-unstyled components">
-                <li>
-                    <a href="#">룸메정보</a>
-                </li>
-                <li>
-                    <a href="#">민원글</a>
-                </li>
                 <li class="active">
-                    <a href="#">공지글</a>
+                    <a href="choose.jsp?id=<%=id %>">룸메정보</a>
                 </li>
                 <li>
-                    <a href="#">홈화면</a>
+                    <a href="complain.jsp?id=<%=id %>">민원글</a>
+                </li>
+                <li>
+                    <a href="notice.jsp?id=<%=id %>">공지글</a>
+                </li>
+                <li>
+                    <a href="main.jsp?id=<%=id %>">홈화면</a>
+                </li>
+            </ul>
+			<ul class="list-unstyled CTAs">
+                <li>
+                    <a href = "mypage.jsp?id=<%=id %>" class="download">마이페이지</a>
                 </li>
             </ul>
 
-
         </nav>
+	</div>
 
-
-
-        <!-- Page Content  -->
-        <div id="content">
-
-
-            <button type="button" id="sidebarCollapse" class="btn btn-info">
-                <i class="fas fa-align-left"></i>
-                <span>메뉴</span>
-            </button>
-
-            <br>
-            <br>
-
-<form action="notice-insert-db.jsp" method="post">
-<table border="0">
-
-<form action="notice-insert-db.jsp" method="post">
-<center>
-<h3 style="color:white"> 공지글 작성하기 </h3> <br><br>
-<table border="0">
-
-<tr>
-  <td> 글 쓴 이 : </td>
-  <td>
-  <% String id = request.getParameter("id"); %>
-  </td>
-</tr>
-<tr>
-  <td>글 제 목 : </td>
-  <td><input type="text" name="title" size="50"></td>
-</tr>
-<tr>
-  <td> 글 내 용 : </td>
-  <td><textarea name="content" cols="65" rows="4"></textarea></td>
-</tr>
-</table><br><br>
-
-<input type="submit" value="등록하기" style="background-color: lightgrey; width:100px; height: 50px;">
-<input type="reset" value="다시쓰기" style="background-color: lightgrey; width:100px; height: 50px;">
-
-</center>
-
-  </form>
-
-
-
-<%
-   String flag = request.getParameter("flag");
-   if("r".equals(flag)){%>
-   		<input type="hidden" name="ref" value="<%=request.getParameter("ref") %>">
-   		<input type="hidden" name="reply" value="y">
-   <%} else %>
-   		<input type="hidden" name="reply" value="n">
-  </form>
     <div class="overlay"></div>
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
@@ -142,5 +160,4 @@
         });
     </script>
 </body>
-
 </html>

@@ -22,13 +22,85 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-
+	  <style>
+        #user .chooseMember {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        .chooseMember .thA, .tdA {
+          background-color: #7c9ee7;
+          border-bottom: 1px solid #2168d1;
+          padding: 10px;
+        }
+       
+      </style>
 </head>
 
 <body>
+        <!-- Page Content  -->
+        <div id = "user">
+            <button type="button" id="sidebarCollapse" class="btn btn-info">
+                <i class="fas fa-align-left"></i>
+                <span>메뉴</span>
+            </button>
+            <br>
+            <br>
+            <center>
+            <h1>룸메정보</h1>
+            </center>
+            
+            <br><br>
+            <center>
+            <table class= "chooseMember">
+            <%
+            	String id = request.getParameter("id");
+            	//String id = "RM";
+            	Connection conn = null;
+            	Statement stmt = null;
+            	String sql = null;
+            	ResultSet rs = null;
+            	String gender = "";
+            	String dorm = "";
+            	
+            	try{
+            		Class.forName("com.mysql.jdbc.Driver");
+            		String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
+            		conn = DriverManager.getConnection(url,"root","0000");
+            		stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+            		sql = "select * from member where id = '"+id+"'";
+            		rs = stmt.executeQuery(sql);
+            		while(rs.next()){
+            		dorm = rs.getString("dorm");
+            		gender = rs.getString("sex");
+            		}
+            		sql = "select * from member where dorm = '"+dorm+"' and sex = '"+gender+"'";
+            		rs=stmt.executeQuery(sql);
+            	}catch(Exception e){
+            		out.println("DB 연동 오류입니다. : " + e.getMessage());
+            	}
+            	  while(rs.next())
+                  {
+            %>
+                <tr class = "trA">
+                    <td class = "tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("nickName") %></a></td>
+                    <td class = "tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("dorm") %> / 
+                    <%=rs.getString("sex") %> / <%=rs.getString("grade") %>학년</a></td>
+                </tr>
+            <%
+                  }
+            %>
+            </table> 
 
+            </center>
+        </div>
+        
+		<div id="content2" style = "background-color: white;">
+		
+		</div>
+		
+	 <!-- Sidebar  -->
     <div class="wrapper">
-        <!-- Sidebar  -->
+       
         <nav id="sidebar">
             <div id="dismiss">
                 <i class="fas fa-arrow-left"></i>
@@ -39,78 +111,28 @@
             </div>
 
             <ul class="list-unstyled components">
-                <li>
-                    <a href="#">룸메정보</a>
-                </li>
-                <li>
-                    <a href="#">민원글</a>
-                </li>
                 <li class="active">
-                    <a href="#">공지글</a>
+                    <a href="choose.jsp?id=<%=id %>">룸메정보</a>
                 </li>
                 <li>
-                    <a href="#">홈화면</a>
+                    <a href="complain.jsp?id=<%=id %>">민원글</a>
+                </li>
+                <li>
+                    <a href="notice.jsp?id=<%=id %>">공지글</a>
+                </li>
+                <li>
+                    <a href="main.jsp?id=<%=id %>">홈화면</a>
+                </li>
+            </ul>
+			<ul class="list-unstyled CTAs">
+                <li>
+                    <a href = "mypage.jsp?id=<%=id %>" class="download">마이페이지</a>
                 </li>
             </ul>
 
-
         </nav>
+	</div>
 
-
-
-        <!-- Page Content  -->
-        <div id="content">
-
-
-            <button type="button" id="sidebarCollapse" class="btn btn-info">
-                <i class="fas fa-align-left"></i>
-                <span>메뉴</span>
-            </button>
-
-            <br>
-            <br>
-
-<form action="notice-insert-db.jsp" method="post">
-<table border="0">
-
-<form action="notice-insert-db.jsp" method="post">
-<center>
-<h3 style="color:white"> 공지글 작성하기 </h3> <br><br>
-<table border="0">
-
-<tr>
-  <td> 글 쓴 이 : </td>
-  <td>
-  <% String id = request.getParameter("id"); %>
-  </td>
-</tr>
-<tr>
-  <td>글 제 목 : </td>
-  <td><input type="text" name="title" size="50"></td>
-</tr>
-<tr>
-  <td> 글 내 용 : </td>
-  <td><textarea name="content" cols="65" rows="4"></textarea></td>
-</tr>
-</table><br><br>
-
-<input type="submit" value="등록하기" style="background-color: lightgrey; width:100px; height: 50px;">
-<input type="reset" value="다시쓰기" style="background-color: lightgrey; width:100px; height: 50px;">
-
-</center>
-
-  </form>
-
-
-
-<%
-   String flag = request.getParameter("flag");
-   if("r".equals(flag)){%>
-   		<input type="hidden" name="ref" value="<%=request.getParameter("ref") %>">
-   		<input type="hidden" name="reply" value="y">
-   <%} else %>
-   		<input type="hidden" name="reply" value="n">
-  </form>
     <div class="overlay"></div>
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->

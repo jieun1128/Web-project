@@ -1,12 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false"%>
 <%@ page import ="java.sql.*" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
+<html lang="en" dir="ltr">
+  <head>
+   <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -23,11 +21,74 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
-</head>
+  </head>
+  <body>
+        <!-- Page Content  -->
+        <div id="content">
 
-<body>
 
-    <div class="wrapper">
+            <button type="button" id="sidebarCollapse" class="btn btn-info">
+                <i class="fas fa-align-left"></i>
+                <span>메뉴</span>
+            </button>
+
+            <br>
+   <%
+      int temp = 0;
+      int cnt;
+      int tableID = 0;
+      String title, content;
+      int userID;
+      int agree, disagree;
+      Connection conn = null;
+      Statement stmt = null;
+      ResultSet rs = null;
+      String sql_update;
+
+      try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
+            conn = DriverManager.getConnection(url, "root", "0000");
+            stmt = conn.createStatement();
+            String sql = "select max(tableID) as max_id, count(*) as cnt from complain ";
+            rs = stmt.executeQuery(sql);
+      }
+      catch(Exception e) {
+            out.println("DB 연동 오류입니다.  : " + e.getMessage());
+      }
+
+      while(rs.next())
+      {
+         cnt = Integer.parseInt(rs.getString("cnt"));
+         if(cnt != 0){
+            tableID = Integer.parseInt(rs.getString("max_id"));
+         }
+      }
+      
+  	  HttpSession session = request.getSession(false);
+  	  String id = (String)session.getAttribute("id");
+      tableID ++;
+      title = request.getParameter("title");
+      content = request.getParameter("content");
+      agree = 0;
+      disagree = 0;
+
+      sql_update = "insert into complain values (" +tableID+","+"'"+id+"',"+"'"+title+"',"+"'"+content+"',"+agree+","+disagree+")";
+      try{
+         stmt.executeUpdate(sql_update);
+      }
+      catch(Exception e){
+         out.println("DB 연동 오류입니다. :"+e.getMessage());
+      }
+         %>
+         <center>
+         <h2>작성한 글이 등록되었습니다.</h2>
+         <a href="complain.jsp"> 게시글 목록 보기 </a><br>
+         </center>
+         
+         
+         
+ <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div id="dismiss">
@@ -39,78 +100,28 @@
             </div>
 
             <ul class="list-unstyled components">
-                <li>
-                    <a href="#">룸메정보</a>
-                </li>
-                <li>
-                    <a href="#">민원글</a>
-                </li>
                 <li class="active">
-                    <a href="#">공지글</a>
+                    <a href="choose.jsp?id=<%=id %>">룸메정보</a>
                 </li>
                 <li>
-                    <a href="#">홈화면</a>
+                    <a href="complain.jsp?id=<%=id %>">민원글</a>
+                </li>
+                <li>
+                    <a href="notice.jsp?id=<%=id %>">공지글</a>
+                </li>
+                <li>
+                    <a href="main.jsp?id=<%=id %>">홈화면</a>
+                </li>
+            </ul>
+			<ul class="list-unstyled CTAs">
+                <li>
+                    <a href = "mypage.jsp?id=<%=id %>" class="download">마이페이지</a>
                 </li>
             </ul>
 
-
         </nav>
-
-
-
-        <!-- Page Content  -->
-        <div id="content">
-
-
-            <button type="button" id="sidebarCollapse" class="btn btn-info">
-                <i class="fas fa-align-left"></i>
-                <span>메뉴</span>
-            </button>
-
-            <br>
-            <br>
-
-<form action="notice-insert-db.jsp" method="post">
-<table border="0">
-
-<form action="notice-insert-db.jsp" method="post">
-<center>
-<h3 style="color:white"> 공지글 작성하기 </h3> <br><br>
-<table border="0">
-
-<tr>
-  <td> 글 쓴 이 : </td>
-  <td>
-  <% String id = request.getParameter("id"); %>
-  </td>
-</tr>
-<tr>
-  <td>글 제 목 : </td>
-  <td><input type="text" name="title" size="50"></td>
-</tr>
-<tr>
-  <td> 글 내 용 : </td>
-  <td><textarea name="content" cols="65" rows="4"></textarea></td>
-</tr>
-</table><br><br>
-
-<input type="submit" value="등록하기" style="background-color: lightgrey; width:100px; height: 50px;">
-<input type="reset" value="다시쓰기" style="background-color: lightgrey; width:100px; height: 50px;">
-
-</center>
-
-  </form>
-
-
-
-<%
-   String flag = request.getParameter("flag");
-   if("r".equals(flag)){%>
-   		<input type="hidden" name="ref" value="<%=request.getParameter("ref") %>">
-   		<input type="hidden" name="reply" value="y">
-   <%} else %>
-   		<input type="hidden" name="reply" value="n">
-  </form>
+	</div>
+	
     <div class="overlay"></div>
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
@@ -142,5 +153,4 @@
         });
     </script>
 </body>
-
 </html>

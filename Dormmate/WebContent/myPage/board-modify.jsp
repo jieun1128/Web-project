@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" session="false"%>
 <%@ page import ="java.sql.*" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
@@ -26,7 +26,84 @@
 </head>
 
 <body>
+	<%
+	String from_board="";
+	int board=Integer.parseInt(request.getParameter("board"));
+	if(board==1) from_board = "notice";
+	else if(board==2) from_board = "complain";
+	
+	int tableID = Integer.parseInt(request.getParameter("tableID"));
+	String title="",content="", userID="",sql;
+	Connection conn = null;
+	Statement stmt = null;
+	ResultSet rs = null;
 
+	
+	try{
+		Class.forName("com.mysql.jdbc.Driver");
+	     String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
+	     conn = DriverManager.getConnection(url, "root", "0000");
+	     stmt = conn.createStatement();
+         sql = "select * from "+ from_board + " where tableID= " + tableID;
+         rs = stmt.executeQuery(sql);
+	}catch(Exception e){
+		out.println("DB 연동 오류입니다.: "+ e.getMessage());
+	}
+
+	String id = request.getParameter("id");
+	
+	while(rs.next()){
+		if(!id.equals(rs.getString("userID")))
+		{
+	%>
+	<center><h2> 게시글은 작성자만 수정가능합니다. </h2>
+	</center>
+	<%
+		}
+		else{
+	%>
+	<center><h2>게시글 수정</h2><br><br>
+	<form action = "notice-modify-db.jsp" method="post">
+<table border="0">
+
+<tr>
+ <% 
+	HttpSession session = request.getSession(false);
+	String nickName = (String)session.getAttribute("nickName");
+  %>
+  <td> 글 쓴 이 : </td>
+  <td>
+ 	<%= nickName %>
+  </td>
+</tr>
+<tr>
+  <td>글 제 목 : </td>
+  <td><input type="text" name="title" size="50"></td>
+</tr>
+<tr>
+  <td> 글 내 용 : </td>
+  <td><textarea name="content" cols="65" rows="4"></textarea></td>
+</tr>
+</table><br><br>
+	
+	<input type = "hidden" name="tableID" value="<%= request.getParameter("tableID") %>">
+	
+	<input type = "submit" value="등록하기">
+	<input type = "reset" value="다시쓰기">
+	</form>
+	<%if(board==1){ %>
+		<a href="notice-read.jsp?tableID=<%= request.getParameter("tableID") %>?board=1"><button>취소</button></a>
+	<%}else if(board==2){ %>
+		<a href="complain-read.jsp?tableID=<%= request.getParameter("tableID") %>?board=2"><button>취소</button></a>
+	</center>
+	<%}
+		}
+	}
+	%>
+  </form>
+  
+  
+         <!-- Sidebar  -->
     <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar">
@@ -39,78 +116,27 @@
             </div>
 
             <ul class="list-unstyled components">
-                <li>
-                    <a href="#">룸메정보</a>
-                </li>
-                <li>
-                    <a href="#">민원글</a>
-                </li>
                 <li class="active">
-                    <a href="#">공지글</a>
+                    <a href="choose.jsp?id=<%=id %>">룸메정보</a>
                 </li>
                 <li>
-                    <a href="#">홈화면</a>
+                    <a href="complain.jsp?id=<%=id %>">민원글</a>
+                </li>
+                <li>
+                    <a href="notice.jsp?id=<%=id %>">공지글</a>
+                </li>
+                <li>
+                    <a href="main.jsp?id=<%=id %>">홈화면</a>
+                </li>
+            </ul>
+			<ul class="list-unstyled CTAs">
+                <li>
+                    <a href = "mypage.jsp?id=<%=id %>" class="download">마이페이지</a>
                 </li>
             </ul>
 
-
         </nav>
-
-
-
-        <!-- Page Content  -->
-        <div id="content">
-
-
-            <button type="button" id="sidebarCollapse" class="btn btn-info">
-                <i class="fas fa-align-left"></i>
-                <span>메뉴</span>
-            </button>
-
-            <br>
-            <br>
-
-<form action="notice-insert-db.jsp" method="post">
-<table border="0">
-
-<form action="notice-insert-db.jsp" method="post">
-<center>
-<h3 style="color:white"> 공지글 작성하기 </h3> <br><br>
-<table border="0">
-
-<tr>
-  <td> 글 쓴 이 : </td>
-  <td>
-  <% String id = request.getParameter("id"); %>
-  </td>
-</tr>
-<tr>
-  <td>글 제 목 : </td>
-  <td><input type="text" name="title" size="50"></td>
-</tr>
-<tr>
-  <td> 글 내 용 : </td>
-  <td><textarea name="content" cols="65" rows="4"></textarea></td>
-</tr>
-</table><br><br>
-
-<input type="submit" value="등록하기" style="background-color: lightgrey; width:100px; height: 50px;">
-<input type="reset" value="다시쓰기" style="background-color: lightgrey; width:100px; height: 50px;">
-
-</center>
-
-  </form>
-
-
-
-<%
-   String flag = request.getParameter("flag");
-   if("r".equals(flag)){%>
-   		<input type="hidden" name="ref" value="<%=request.getParameter("ref") %>">
-   		<input type="hidden" name="reply" value="y">
-   <%} else %>
-   		<input type="hidden" name="reply" value="n">
-  </form>
+	</div>
     <div class="overlay"></div>
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
