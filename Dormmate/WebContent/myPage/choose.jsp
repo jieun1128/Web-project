@@ -76,7 +76,7 @@
             	}
             	%>
             <br><br>
-            <h3><%=id%>님과 같은 조건인 <%=dorm%>에 살고 <%=gender%>인 이용자 목록입니다.</h3>
+            <h3><%=id%>님과 같은 조건인 <br><%=dorm%>에 살고 <%=gender%>인 <br>이용자 목록입니다.</h3>
             </center>
             <br><br>
             <center>
