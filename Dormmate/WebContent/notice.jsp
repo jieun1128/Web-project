@@ -1,12 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import ="java.sql.*" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
+<html lang="en" dir="ltr">
+  <head>
+   <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -23,40 +21,8 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
-</head>
-
-<body>
-
-    <div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar">
-            <div id="dismiss">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-
-            <div class="sidebar-header">
-                <h3>동국 기숙사</h3>
-            </div>
-
-            <ul class="list-unstyled components">
-                <li>
-                    <a href="#">룸메정보</a>
-                </li>
-                <li>
-                    <a href="#">민원글</a>
-                </li>
-                <li class="active">
-                    <a href="#">공지글</a>
-                </li>
-                <li>
-                    <a href="#">홈화면</a>
-                </li>
-            </ul>
-
-
-        </nav>
-
-
+  </head>
+  <body>
 
         <!-- Page Content  -->
         <div id="content">
@@ -69,37 +35,50 @@
 
             <br>
             <br>
-
+ 
             <h1>공지글</h1>
 
             <div class="line"></div>
             <center>
-                <h1><b>게시글 목록 보기</b></h1>
+                <h1><b>게시글 목록 보기</b></h1> <br><br>
+ 	    
+	            <input type="radio" name="sort_check" value="recent" checked="checked" > 최신순
+                <input type="radio" name="sort_check" value="agree" > 공감순
+              
                  <table border="1" align="center" width="603px;">
 
                  <tr style="background-color:Lightgray;">
                    <td align="center" width="100">글번호</td>
-                   <td align="center" width="100">글쓴이</td>
-                   <td align="center"width="375">글제목</td>
+                   <td align="center" width="150">글쓴이</td>
+                   <td align="center"width="500">글제목</td>
                    <td align="center" width="100">공감수</td>
+                   <td align="center" width="100">비공감수</td>
                  </tr>
-            </table>
+            
+           
 			<%
-      int id,ref;
-      int rownum=0;
-      Connection conn = null;
-      Statement stmt = null;
-      String sql = null;
-      ResultSet rs = null;
-      %>
-      
-      <%
+
+			String id = (String)session.getAttribute("id");// 변경 
+			
+		 	String radioValue = request.getParameter("sort_check");
+			String selectsql;	// 게시물 순서 선택에 따른 select문
+	  		if(radioValue=="recent")	selectsql="select * from notice order by tableID asc";  
+	  		else selectsql = "select * from notice order by agree desc tableID asc;";
+	  	
+	  
+    		int tableID;
+      		int rownum=0;
+      		Connection conn = null;
+     		Statement stmt = null;
+     		String sql = null;
+      		ResultSet rs = null;
+      		
       try{
     	  Class.forName("com.mysql.jdbc.Driver");
-    	  String url = "jdbc:mysql://localhost:3306/wptest?serverTimezone=UTC"; // 바꾸기 
+    	  String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";//localhost:3306/dormitory?serverTimezone=UTC"; // 바꾸기 
     	  conn = DriverManager.getConnection(url,"root","0000"); // 바꾸기 
     	  stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-    	  sql = "select * from board_tbl order by ref desc, id asc "; // 공지글 테이블에서 가져오기 
+    	  sql="select * from notice order by tableID desc";
     	  rs = stmt.executeQuery(sql);
       }
       
@@ -113,21 +92,19 @@
       
       while(rs.next())
       {
-    	 id = Integer.parseInt(rs.getString("id"));
-    	 ref = Integer.parseInt(rs.getString("ref"));
+    	 tableID = Integer.parseInt(rs.getString("tableID"));
     	  %>
     	  
-    	  <tr>
+    	  <tr style="background-color:white; color: black;">
              <td align="center"><%= rownum %> </td>
-             <td align="left"><%=rs.getString("Name") %></td>
-             <td align="left"><% if (id!=ref) out.println("┖---→"); %>
-               <a href=Board-read.jsp?id=<%=rs.getString("id") %> style="width:250;"><%=rs.getString("title") %></a>
+             <td align="left"><%=rs.getString("userID") %></td>
+             <td align="left">
+               <a href="notice-read.jsp?tableID=<%=rs.getString("tableID")%>&id=<%=id%>" style="width:400;"><%=rs.getString("title") %></a>
              </td>
-             <td align="center"><%= rs.getString("E_mail") %></td>
-      
+             <td align="center"><%= rs.getString("agree") %></td>
+      		 <td align="center"><%= rs.getString("disagree") %></td>
             </tr>
         
-
       <%
       
            rownum--;
@@ -137,8 +114,11 @@
    
       
      </table>
-    	  
-            <a href="Board-insert.jsp">게시글 쓰기</a>
+     
+     
+     
+     <br><br>
+            <a href="notice-insert.jsp"><button>게시글 쓰기</button></a>
 
             </center>
 
@@ -147,6 +127,41 @@
      stmt.close();
      conn.close();
    %>
+
+       <!-- Sidebar  -->
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div id="dismiss">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+
+            <div class="sidebar-header">
+                <h3>동국 기숙사</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="choose.jsp">룸메정보</a>
+                </li>
+                <li>
+                    <a href="complain.jsp">민원글</a>
+                </li>
+                <li class="active">
+                    <a href="notice.jsp">공지글</a>
+                </li>
+                <li>
+                    <a href="main.jsp">홈화면</a>
+                </li>
+            </ul>
+			<ul class="list-unstyled CTAs">
+                <li>
+                    <a href = "mypage.jsp" class="download">마이페이지</a>
+                </li>
+            </ul>
+
+        </nav>
+	</div>
 
     <div class="overlay"></div>
 
@@ -173,11 +188,9 @@
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').addClass('active');
                 $('.overlay').addClass('active');
-                $('.collapse.in').toggleClass('in');
                 $('a[aria-expanded=true]').attr('aria-expanded', 'false');
             });
         });
     </script>
 </body>
-
 </html>

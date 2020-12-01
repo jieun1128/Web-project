@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import ="java.sql.*" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
@@ -9,10 +9,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <title>동국 기숙사</title>
-
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="sideNavi.css">
-   
+    
   </head>
   <body>
         <!-- Page Content  -->
@@ -42,7 +41,7 @@
             String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
             conn = DriverManager.getConnection(url, "root", "0000");
             stmt = conn.createStatement();
-            String sql = "select max(tableID) as max_id, count(*) as cnt from notice ";
+            String sql = "select max(tableID) as max_id, count(*) as cnt from complain ";
             rs = stmt.executeQuery(sql);
       }
       catch(Exception e) {
@@ -53,18 +52,18 @@
       {
          cnt = Integer.parseInt(rs.getString("cnt"));
          if(cnt != 0){
-            tableID = Integer.parseInt(rs.getString("max_id")) + 1;
+            tableID = Integer.parseInt(rs.getString("max_id"));
          }
       }
       
-  	  HttpSession session = request.getSession(false);
   	  String id = (String)session.getAttribute("id");
+      tableID ++;
       title = request.getParameter("title");
       content = request.getParameter("content");
       agree = 0;
       disagree = 0;
 
-      sql_update = "insert into notice values (" +tableID+","+"'"+id+"',"+"'"+title+"',"+"'"+content+"',"+agree+","+disagree+")";
+      sql_update = "insert into complain values (" +tableID+","+"'"+id+"',"+"'"+title+"',"+"'"+content+"',"+agree+","+disagree+")";
       try{
          stmt.executeUpdate(sql_update);
       }
@@ -74,7 +73,8 @@
          %>
          <center>
          <h2>작성한 글이 등록되었습니다.</h2>
-         <a href="notice.jsp"> 게시글 목록 보기 </a><br>
+         <a href="complain.jsp"> 게시글 목록 보기 </a><br>
          </center>
+        
 </body>
 </html>

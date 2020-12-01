@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import ="java.sql.*" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
@@ -27,16 +27,15 @@
             <br>
             <br>
 
-<form action="notice-insert-db.jsp" method="post">
+<form action="complain-insert-db.jsp" method="post">
 <center>
-<h3 style="color:white"> 공지글 작성하기 </h3> <br><br>
+<h3 style="color:white"> 민원글 작성하기 </h3> <br><br>
 <table border="0">
 
 <tr>
   <td> 글 쓴 이 : </td>
   <td>
   <% 
-  	HttpSession session = request.getSession(false);
 	String id = (String)session.getAttribute("id");// 변경 
   %>
   <%= id %>
@@ -56,6 +55,7 @@
 <input type="reset" value="다시쓰기" style="background-color: lightgrey; width:100px; height: 50px;">
 
 </center>
+
 
 </body>
 </html>

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>동국 기숙사</title>
+    <title>동국 기숙사</title>	<!-- findPW.jsp -> 비밀번호 찾는 화면 -->
     <link rel="stylesheet" type="text/css" href="project.css"/>
         <style>
             table {
@@ -19,16 +19,12 @@
   <center>
     <input type="image" src="dongguk.png">
     <h3>비밀번호 찾기</h3><br>
-    <form method="post" action="notifyPW.jsp">
+    <form method="post" action="notifyPW.jsp">	<!-- submit 클릭 시 notifyPW.jsp 화면으로 넘겨짐 -->
         <table>
         <tr>
             <td>ID</td> 
-            <td><input type="text" name="id" placeholder="아이디"></td>
+            <td><input type="text" name="id" placeholder="아이디"></td>	<!-- 아이디 입력받기 -->
         </tr>
-<!--          <tr>
-             <td>어머니의 고향은?</td> 
-             <td><input type="text" name="key" placeholder="어머니의 고향은?"></td>
-        </tr>  -->
         </table>
         <br>
         <input type="submit" value="비밀번호 확인하기">
