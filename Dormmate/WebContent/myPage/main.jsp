@@ -6,7 +6,7 @@
 <html>
 <head>
 <title>동국 기숙사</title>  <!-- main.jsp -> 메인 화면 -->
-<link rel="stylesheet" type="text/css" href="project.css"/>
+<link rel="stylesheet" type="text/css" href="sideNavi.css"/>
 
 <style type="text/css">
 body{
@@ -89,47 +89,66 @@ left : 50px;
       <div id="board">  <!-- 공지 게시판 -->
         <br><br>
         <h3> 공지 게시판 </h3>
+        <%
+        String id = (String)session.getAttribute("id");// 변경 
+        Connection conn = null;
+ 		Statement stmt = null;
+ 		String sql = null;
+  		ResultSet rs = null;
+        try{
+      	  Class.forName("com.mysql.jdbc.Driver");
+      	  String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";//localhost:3306/dormitory?serverTimezone=UTC"; // 바꾸기 
+      	  conn = DriverManager.getConnection(url,"root","0000"); // 바꾸기 
+      	  stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+      	  sql="select * from notice order by tableID desc";
+      	  rs = stmt.executeQuery(sql);
+        }
+        
+        catch(Exception e ){
+      	  out.println("DB 연동 오류입니다. : " + e.getMessage());
+        }
+        int rownum=0;
+        %>
         <table>
+        <% 
+       	while(rs.next()){
+       		if(rownum == 5)break;
+        %>
           <tr>
-            <td> 리스트항목1 </td>
+            <td> <a href="notice-read.jsp?tableID=<%=rs.getString("tableID")%>&id=<%=id%>" style="width:400;"><%=rs.getString("title") %></a> </td>
           </tr>
-          <tr>
-            <td> 리스트항목2 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목3 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목4 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목5 </td>
-          </tr>
+          <%
+          rownum++;
+       	}
+          %>
         </table> <br>
-        <input type="button" value="공지 게시판 바로가기" href="notice.jsp">  <!-- 공지 게시판으로 이동 -->
+        <input type="button" value="공지 게시판 바로가기" onClick="location.href='notice.jsp'">  <!-- 공지 게시판으로 이동 -->
       </div>
 
       <div id="board2">  <!-- 민원 게시판 -->
         <br><br>
         <h3> 민원 게시판 </h3>
         <table>
+        <%
+        try{	
+        	sql="select * from complain order by tableID desc";
+  	  		rs = stmt.executeQuery(sql);
+        }catch(Exception e){
+        	out.println("DB 연동 오류입니다. : " + e.getMessage());
+        }
+        rownum=0;
+        while(rs.next()){
+        	if(rownum == 5)break;
+        %>
           <tr>
-            <td> 리스트항목1 </td>
+            <td> <a href="complain-read.jsp?tableID=<%=rs.getString("tableID") %>&id=<%= id%>"  style="width:400;"><%=rs.getString("title") %></a> </td>
           </tr>
-          <tr>
-            <td> 리스트항목2 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목3 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목4 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목5 </td>
-          </tr>
+          <%
+          rownum++;
+        }
+          %>
         </table> <br>
-        <input type="button" value="민원 게시판 바로가기" href="complain.jsp">  <!-- 민원 게시판으로 이동 -->
+        <input type="button" value="민원 게시판 바로가기" onClick="location.href='complain.jsp'">  <!-- 민원 게시판으로 이동 -->
       </div>
     </content>
     

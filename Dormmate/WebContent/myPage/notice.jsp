@@ -58,7 +58,7 @@
            
 			<%
 
-			String id = (String)request.getParameter("id");// 변경 
+			String id = (String)session.getAttribute("id");// 변경 
 			
 		 	String radioValue = request.getParameter("sort_check");
 			String selectsql;	// 게시물 순서 선택에 따른 select문
@@ -78,7 +78,7 @@
     	  String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";//localhost:3306/dormitory?serverTimezone=UTC"; // 바꾸기 
     	  conn = DriverManager.getConnection(url,"root","0000"); // 바꾸기 
     	  stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-    	  sql="select * from notice order by tableID asc";
+    	  sql="select * from notice order by tableID desc";
     	  rs = stmt.executeQuery(sql);
       }
       
@@ -99,7 +99,7 @@
              <td align="center"><%= rownum %> </td>
              <td align="left"><%=rs.getString("userID") %></td>
              <td align="left">
-               <a href="notice-read.jsp?tableID=<%=rs.getString("tableID")%>&id=<%= rs.getString("id") %>" style="width:400;"><%=rs.getString("title") %></a>
+               <a href="notice-read.jsp?tableID=<%=rs.getString("tableID")%>&id=<%=id%>" style="width:400;"><%=rs.getString("title") %></a>
              </td>
              <td align="center"><%= rs.getString("agree") %></td>
       		 <td align="center"><%= rs.getString("disagree") %></td>
@@ -118,7 +118,7 @@
      
      
      <br><br>
-            <a href="notice-insert.jsp?id=<%= id %>"><button>게시글 쓰기</button></a>
+            <a href="notice-insert.jsp"><button>게시글 쓰기</button></a>
 
             </center>
 
@@ -142,21 +142,21 @@
 
             <ul class="list-unstyled components">
                 <li class="active">
-                    <a href="choose.jsp?id=<%=id %>">룸메정보</a>
+                    <a href="choose.jsp">룸메정보</a>
                 </li>
                 <li>
-                    <a href="complain.jsp?id=<%=id %>">민원글</a>
+                    <a href="complain.jsp">민원글</a>
                 </li>
                 <li>
-                    <a href="notice.jsp?id=<%=id %>">공지글</a>
+                    <a href="notice.jsp">공지글</a>
                 </li>
                 <li>
-                    <a href="main.jsp?id=<%=id %>">홈화면</a>
+                    <a href="main.jsp">홈화면</a>
                 </li>
             </ul>
 			<ul class="list-unstyled CTAs">
                 <li>
-                    <a href = "mypage.jsp?id=<%=id %>" class="download">마이페이지</a>
+                    <a href = "mypage.jsp" class="download">마이페이지</a>
                 </li>
             </ul>
 
@@ -188,7 +188,6 @@
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').addClass('active');
                 $('.overlay').addClass('active');
-                $('.collapse.in').toggleClass('in');
                 $('a[aria-expanded=true]').attr('aria-expanded', 'false');
             });
         });

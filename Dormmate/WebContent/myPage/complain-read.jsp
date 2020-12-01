@@ -36,7 +36,7 @@
 	 ResultSet rs = null;
   
 	 int tableID = Integer.parseInt(request.getParameter("tableID"));
-     String id = (String)request.getParameter("id");// 변경 
+     
 
 	 try {
                Class.forName("com.mysql.jdbc.Driver");
@@ -81,7 +81,7 @@
  </div>
  
  <br><br><br>
-<% if(userID.equals(id)){ %>
+<% if(userID.equals((String)request.getParameter("id"))){ %>
      <a href="board-modify.jsp?tableID=<%=tableID%>&board=2"> <button>게시글 수정</button> </a>    
 
     <a href="board-delete-db.jsp?tableID=<%=tableID%>&board=2"> <button>게시글 삭제 </button> </a>
@@ -108,21 +108,21 @@
 
             <ul class="list-unstyled components">
                 <li class="active">
-                    <a href="choose.jsp?id=<%=id %>">룸메정보</a>
+                    <a href="choose.jsp">룸메정보</a>
                 </li>
                 <li>
-                    <a href="complain.jsp?id=<%=id %>">민원글</a>
+                    <a href="complain.jsp">민원글</a>
                 </li>
                 <li>
-                    <a href="notice.jsp?id=<%=id %>">공지글</a>
+                    <a href="notice.jsp">공지글</a>
                 </li>
                 <li>
-                    <a href="main.jsp?id=<%=id %>">홈화면</a>
+                    <a href="main.jsp">홈화면</a>
                 </li>
             </ul>
 			<ul class="list-unstyled CTAs">
                 <li>
-                    <a href = "mypage.jsp?id=<%=id %>" class="download">마이페이지</a>
+                    <a href = "mypage.jsp" class="download">마이페이지</a>
                 </li>
             </ul>
 
@@ -154,7 +154,6 @@
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').addClass('active');
                 $('.overlay').addClass('active');
-                $('.collapse.in').toggleClass('in');
                 $('a[aria-expanded=true]').attr('aria-expanded', 'false');
             });
         });
