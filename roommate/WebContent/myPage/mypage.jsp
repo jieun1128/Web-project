@@ -216,7 +216,7 @@
         %>
         <br><br>
         <form method = "post" action = "modifyDetail.jsp">
-			<input type="submit" class="carrotbutton" value="세부정보입력">
+			<input type="submit" class="carrotbutton" value="세부정보수정">
         	<input type="hidden" name = "id" value="<%=id %>">
         	<input type="hidden" name = "version"value = "<%=version%>">
             <br><br>

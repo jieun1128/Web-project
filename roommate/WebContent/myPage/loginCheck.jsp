@@ -24,7 +24,7 @@
          String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
      	 conn = DriverManager.getConnection(url, "root", "0000");
     	 stmt = conn.createStatement();
-         sql = "select id, pwd, nickName from member";
+         sql = "select id, pwd from member";
          rs = stmt.executeQuery(sql);
    }
    catch(Exception e) {
@@ -38,9 +38,7 @@
 			if(pw.equals(rs.getString("pwd"))){
 				check = 2;
 				session.setAttribute("id", id);
-				String nickName= rs.getString("nickName");
-				session.setAttribute("nickName", nickName);
-				response.sendRedirect("main.jsp?id='id'");    
+				response.sendRedirect("main.jsp");    
 				break;
 			}
       }

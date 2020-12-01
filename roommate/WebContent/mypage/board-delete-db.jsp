@@ -22,84 +22,44 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-	  <style>
-        #user .chooseMember {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        .chooseMember .thA, .tdA {
-          background-color: #7c9ee7;
-          border-bottom: 1px solid #2168d1;
-          padding: 10px;
-        }
-       
-      </style>
+
 </head>
+  <body>
+    <%
+      	String sql, sql1;
+      	Connection conn = null;
+      	Statement stmt = null;
+       	ResultSet rs = null;
+   		
+       	int tableID=Integer.parseInt(request.getParameter("tableID"));
+       	String from_board=(String)session.getAttribute("board");
+       	String href_board=from_board.concat(".jsp");
+   		
+   		String id = (String)session.getAttribute("id");
+   		
+   		
+      	try { 
+      		Class.forName("com.mysql.jdbc.Driver");
+      	    String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
+      	    conn = DriverManager.getConnection(url, "root", "0000");
+      	    stmt = conn.createStatement();
+           	sql =  "delete from "+ from_board +" where tableID = " + tableID;
+            stmt.executeUpdate(sql);
+		}catch(Exception e) {
+			out.println("DB 연동 오류입니다. : " + e.getMessage());
+		}
+   		
+    %>
+    <center><h2> 게시글이 삭제되었습니다. </h2>
+     <a href=<%= href_board%>> <button>게시글 목록 보기</button></a>
+    </center>
+	<%
+     stmt.close();
+     conn.close();
+   %>
 
-<body>
-        <!-- Page Content  -->
-        <div id = "user">
-            <button type="button" id="sidebarCollapse" class="btn btn-info">
-                <i class="fas fa-align-left"></i>
-                <span>메뉴</span>
-            </button>
-            <br>
-            <br>
-            <center>
-            <h1>룸메정보</h1>
-            </center>
-            
-            <br><br>
-            <center>
-            <table class= "chooseMember">
-            <%
-            	String id = request.getParameter("id");
-            	//String id = "RM";
-            	Connection conn = null;
-            	Statement stmt = null;
-            	String sql = null;
-            	ResultSet rs = null;
-            	String gender = "";
-            	String dorm = "";
-            	
-            	try{
-            		Class.forName("com.mysql.jdbc.Driver");
-            		String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
-            		conn = DriverManager.getConnection(url,"root","0000");
-            		stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-            		sql = "select * from member where id = '"+id+"'";
-            		rs = stmt.executeQuery(sql);
-            		while(rs.next()){
-            		dorm = rs.getString("dorm");
-            		gender = rs.getString("sex");
-            		}
-            		sql = "select * from member where dorm = '"+dorm+"' and sex = '"+gender+"'";
-            		rs=stmt.executeQuery(sql);
-            	}catch(Exception e){
-            		out.println("DB 연동 오류입니다. : " + e.getMessage());
-            	}
-            	  while(rs.next())
-                  {
-            %>
-                <tr class = "trA">
-                    <td class = "tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("nickName") %></a></td>
-                    <td class = "tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("dorm") %> / 
-                    <%=rs.getString("sex") %> / <%=rs.getString("grade") %>학년</a></td>
-                </tr>
-            <%
-                  }
-            %>
-            </table> 
-
-            </center>
-        </div>
-        
-		<div id="content2" style = "background-color: white;">
-		
-		</div>
-	
+       <!-- Sidebar  -->
     <div class="wrapper">
-        <!-- Sidebar  -->
         <nav id="sidebar">
             <div id="dismiss">
                 <i class="fas fa-arrow-left"></i>
@@ -163,5 +123,4 @@
         });
     </script>
 </body>
-
 </html>

@@ -1,12 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import ="java.sql.*" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
+<html lang="en" dir="ltr">
+  <head>
+   <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -22,82 +20,83 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-	  <style>
-        #user .chooseMember {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        .chooseMember .thA, .tdA {
-          background-color: #7c9ee7;
-          border-bottom: 1px solid #2168d1;
-          padding: 10px;
-        }
-       
-      </style>
-</head>
 
-<body>
+  </head>
+  <body>
+
         <!-- Page Content  -->
-        <div id = "user">
-            <button type="button" id="sidebarCollapse" class="btn btn-info">
-                <i class="fas fa-align-left"></i>
-                <span>메뉴</span>
-            </button>
-            <br>
-            <br>
-            <center>
-            <h1>룸메정보</h1>
-            </center>
-            
-            <br><br>
-            <center>
-            <table class= "chooseMember">
-            <%
-            	String id = request.getParameter("id");
-            	//String id = "RM";
-            	Connection conn = null;
-            	Statement stmt = null;
-            	String sql = null;
-            	ResultSet rs = null;
-            	String gender = "";
-            	String dorm = "";
-            	
-            	try{
-            		Class.forName("com.mysql.jdbc.Driver");
-            		String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
-            		conn = DriverManager.getConnection(url,"root","0000");
-            		stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-            		sql = "select * from member where id = '"+id+"'";
-            		rs = stmt.executeQuery(sql);
-            		while(rs.next()){
-            		dorm = rs.getString("dorm");
-            		gender = rs.getString("sex");
-            		}
-            		sql = "select * from member where dorm = '"+dorm+"' and sex = '"+gender+"'";
-            		rs=stmt.executeQuery(sql);
-            	}catch(Exception e){
-            		out.println("DB 연동 오류입니다. : " + e.getMessage());
-            	}
-            	  while(rs.next())
-                  {
-            %>
-                <tr class = "trA">
-                    <td class = "tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("nickName") %></a></td>
-                    <td class = "tdA"><a href=choose_sub.jsp?id=<%=rs.getString("id") %> style="width:250;"><%= rs.getString("dorm") %> / 
-                    <%=rs.getString("sex") %> / <%=rs.getString("grade") %>학년</a></td>
-                </tr>
-            <%
-                  }
-            %>
-            </table> 
+        <div id="content">
+<%
 
-            </center>
+	 
+	 String userID = "", title = "", content = "";
+	 int agree=0, disagree=0;
+     Connection conn = null;
+	 Statement stmt = null;
+	 ResultSet rs = null;
+	 
+	 String board="complain";
+	 session.setAttribute("board", board);
+	 int tableID = Integer.parseInt(request.getParameter("tableID"));
+	 String id = (String)session.getAttribute("id");
+	 
+	 try {
+               Class.forName("com.mysql.jdbc.Driver");
+               String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
+               conn = DriverManager.getConnection(url, "root", "0000");
+               stmt = conn.createStatement();
+               String sql = "select * from complain where tableID = " + tableID;
+               rs = stmt.executeQuery(sql);
+         }
+         catch(Exception e) {
+               out.println("DB 연동 오류입니다. : " + e.getMessage());
+         } 
+
+         while(rs.next())  {
+	       userID = rs.getString("userID");
+	       title = rs.getString("title");
+	       content = rs.getString("content");
+	       agree = rs.getInt("agree");
+	       disagree = rs.getInt("disagree");
+	 }
+    %>     
+    <center>
+
+     <br><br><br>
+	<h2><%= title %></h2>
+    <br>
+        작성자: <%= userID %> <br>
+    <%
+    int like=0; // 동의 비동의 눌렀는지
+    int disliked=0;
+    %>
+    <input type="image" src="agree.png" style="width: 50px; height: 50px;""> 
+    <input type="image" src="disagree.png" style="width: 50px; height: 50px;""> <br>
+
+       동의  : <%= agree %> | 비동의 : <%= disagree %>
+           
+    <div class="line"></div>
+
+	<div style="background-color:#F0E6FD ; color:black; width:60%; height: 400px; align: center;">
+  <%= content %>
+
+ </div>
+ 
+ <br><br><br>
+<% if(userID.equals(id)){ %>
+     <a href="board-modify.jsp?tableID=<%=tableID%>"> <button>게시글 수정</button> </a>    
+
+    <a href="board-delete-db.jsp?tableID=<%=tableID%>"> <button>게시글 삭제 </button> </a>
+<% } %>    
+    <a href="complain.jsp"> <button>게시글 목록 보기 </button></a>
+  </center>
         </div>
-        
-		<div id="content2" style = "background-color: white;">
-		
-		</div>
-	
+	<%
+     stmt.close();
+     conn.close();
+   %>
+
+       <!-- Sidebar  -->
     <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar">
@@ -163,5 +162,4 @@
         });
     </script>
 </body>
-
 </html>
