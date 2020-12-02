@@ -35,7 +35,7 @@
             String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
             conn = DriverManager.getConnection(url, "root", "0000");
             stmt = conn.createStatement();
-            String sql = "select max(tableID) as max_id, count(*) as cnt from notice ";
+            String sql = "select max(tableID) as max_id, count(*) as cnt from notice ";	// tableID 부여하기 위해 
             rs = stmt.executeQuery(sql);
       }
       catch(Exception e) {
@@ -46,17 +46,17 @@
       {
          cnt = Integer.parseInt(rs.getString("cnt"));
          if(cnt != 0){
-            tableID = Integer.parseInt(rs.getString("max_id")) + 1;
+            tableID = Integer.parseInt(rs.getString("max_id")) + 1;	// 현재 제일 큰 숫사 +1로 테이블 아이디 부여 
          }
       }
       
   	  HttpSession session = request.getSession(false);
-  	  String id = (String)session.getAttribute("id");
-      title = request.getParameter("title");
-      content = request.getParameter("content");
-      agree = 0;
-      disagree = 0;
-
+  	  String id = (String)session.getAttribute("id");		// 아이디 (글쓴이)
+      title = request.getParameter("title");				//제목
+      content = request.getParameter("content");			//내용
+      agree = 0;					//공감수
+      disagree = 0;					//비공감수
+   // 데이터베이스에 작성한 글 등록 
       sql_update = "insert into notice values (" +tableID+","+"'"+id+"',"+"'"+title+"',"+"'"+content+"',"+agree+","+disagree+")";
       try{
          stmt.executeUpdate(sql_update);
