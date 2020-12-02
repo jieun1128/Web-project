@@ -17,7 +17,6 @@
 
 <body>
   <center>
-    <input type="image" src="dongguk.png">
     <h3>비밀번호 찾기</h3><br>
     <form method="post" action="notifyPW.jsp">	<!-- submit 클릭 시 notifyPW.jsp 화면으로 넘겨짐 -->
         <table>

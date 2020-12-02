@@ -44,9 +44,6 @@
             <div class="line"></div>
             <center>
                 <h1><b>게시글 목록 보기</b></h1> <br><br>
- 	    
-	            <input type="radio" name="sort_check" value="recent" checked="checked" > 최신순
-                <input type="radio" name="sort_check" value="agree" > 공감순
               
                  <table border="1" align="center" width="603px;">
 
@@ -61,13 +58,7 @@
            
 			<%
 
-			String id = (String)session.getAttribute("id");// 변경 
-			
-		 	String radioValue = request.getParameter("sort_check");
-			String selectsql;	// 게시물 순서 선택에 따른 select문
-	  		if(radioValue=="recent")	selectsql="select * from complain order by tableID asc";  
-	  		else selectsql = "select * from complain order by agree desc tableID asc;";
-	  	
+			String id = (String)session.getAttribute("id");// 아이디 받아오기 
 	  
     		int tableID;
       		int rownum=0;
@@ -80,10 +71,10 @@
       <%
       try{
     	  Class.forName("com.mysql.jdbc.Driver");
-    	  String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";//localhost:3306/dormitory?serverTimezone=UTC"; // 바꾸기 
-    	  conn = DriverManager.getConnection(url,"root","0000"); // 바꾸기 
+    	  String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
+    	  conn = DriverManager.getConnection(url,"root","0000"); 
     	  stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-    	  sql="select * from complain order by tableID desc";
+    	  sql="select * from complain order by tableID desc"; // 민원글 목록 불러오기 
     	  rs = stmt.executeQuery(sql);
       }
       
@@ -97,17 +88,17 @@
       
       while(rs.next())
       {
-    	 tableID = Integer.parseInt(rs.getString("tableID"));
+    	 tableID = Integer.parseInt(rs.getString("tableID")); // 글 번호 불러오기 
     	  %>
     	  
     	  <tr style="background-color:white; color: black;">
-             <td align="center"><%= rownum %> </td>
-             <td align="left"><%=rs.getString("userID") %></td>
+             <td align="center"><%= rownum %> </td>		<!-- 글 순서 번호  -->
+             <td align="left"><%=rs.getString("userID") %></td>	<!-- 글쓴이  -->
              <td align="left">
                <a href="complain-read.jsp?tableID=<%=rs.getString("tableID") %>&id=<%= id%>"  style="width:400;"><%=rs.getString("title") %></a>
-             </td>
-             <td align="center"><%= rs.getString("agree") %></td>
-      		 <td align="center"><%= rs.getString("disagree") %></td>
+             </td>	<!-- 글제목 (누르면 글 번호를 참조해 글 내용을 불러옴) -->
+             <td align="center"><%= rs.getInt("agree") %></td>	<!-- 공감 -->
+      		 <td align="center"><%= rs.getInt("disagree") %></td>	<!-- 비공감 -->
             </tr>
         
       <%
@@ -137,14 +128,14 @@
     <div class="wrapper">
         <nav id="sidebar">
             <div id="dismiss">
-                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-left"></i>	<!-- 왼쪽 가리키는 화살표 아이콘 -->
             </div>
 
-            <div class="sidebar-header">
+            <div class="sidebar-header">	<!-- 사이드바의 맨 위에 동국 기숙사 출력  -->
                 <h3>동국 기숙사</h3>
             </div>
 
-            <ul class="list-unstyled components">
+            <ul class="list-unstyled components">	<!-- 사이드 바를 통해 이동 가능한 페이지의 목록이다. -->
                 <li>
                     <a href="choose.jsp">룸메정보</a>
                 </li>
@@ -158,7 +149,7 @@
                     <a href="main.jsp">홈화면</a>
                 </li>
             </ul>
-			<ul class="list-unstyled CTAs">
+			<ul class="list-unstyled CTAs">	<!-- 마이페이지는 페이지 목록 밑에 따로 버튼을 만들어 둔다. -->
                 <li>
                     <a href = "mypage.jsp" class="download">마이페이지</a>
                 </li>
@@ -180,16 +171,16 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#sidebar").mCustomScrollbar({
+            $("#sidebar").mCustomScrollbar({	/* 사이드바 스크롤 설정 */
                 theme: "minimal"
             });
 
-            $('#dismiss, .overlay').on('click', function () {
+            $('#dismiss, .overlay').on('click', function () {	/* 뒤로 가기 화살표 버튼을 눌렀을 때 */
                 $('#sidebar').removeClass('active');
                 $('.overlay').removeClass('active');
             });
 
-            $('#sidebarCollapse').on('click', function () {
+            $('#sidebarCollapse').on('click', function () {	/* 메뉴 버튼을 눌렀을 때 */
                 $('#sidebar').addClass('active');
                 $('.overlay').addClass('active');
                 $('a[aria-expanded=true]').attr('aria-expanded', 'false');

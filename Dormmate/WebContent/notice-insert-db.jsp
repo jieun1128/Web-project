@@ -18,13 +18,6 @@
         <!-- Page Content  -->
         <div id="content">
 
-
-            <button type="button" id="sidebarCollapse" class="btn btn-info">
-                <i class="fas fa-align-left"></i>
-                <span>메뉴</span>
-            </button>
-
-            <br>
    <%
       int temp = 0;
       int cnt;

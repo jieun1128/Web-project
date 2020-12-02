@@ -18,44 +18,35 @@
         <!-- Page Content  -->
         <div id="content">
 
-
-            <button type="button" id="sidebarCollapse" class="btn btn-info">
-                <i class="fas fa-align-left"></i>
-                <span>메뉴</span>
-            </button>
-
-            <br>
-            <br>
-
-<form action="complain-insert-db.jsp" method="post">
-<center>
-<h3 style="color:white"> 민원글 작성하기 </h3> <br><br>
-<table border="0">
-
-<tr>
-  <td> 글 쓴 이 : </td>
-  <td>
-  <% 
-	String id = (String)session.getAttribute("id");// 변경 
-  %>
-  <%= id %>
-  </td>
-</tr>
-<tr>
-  <td>글 제 목 : </td>
-  <td><input type="text" name="title" size="50"></td>
-</tr>
-<tr>
-  <td> 글 내 용 : </td>
-  <td><textarea name="content" cols="65" rows="4"></textarea></td>
-</tr>
-</table><br><br>
-
-<input type="submit" value="등록하기" style="background-color: lightgrey; width:100px; height: 50px;">
-<input type="reset" value="다시쓰기" style="background-color: lightgrey; width:100px; height: 50px;">
-
-</center>
-
-
-</body>
-</html>
+		<center>
+		<form action="complain-insert-db.jsp" method="post">
+		<h3 style="color:white"> 민원글 작성하기 </h3> <br><br>
+		<table border="0">
+		
+		<tr>
+		  <td> 글 쓴 이 : </td>
+		  <td>
+		  <% 
+			String id = (String)session.getAttribute("id");// 아이디 불러오기 
+		  %>
+		  <%= id %>
+		  </td>
+		</tr>
+		<tr>
+		  <td>글 제 목 : </td>
+		  <td><input type="text" name="title" size="50"></td>	 <!-- 글제목 작성  -->
+		</tr>
+		<tr>
+		  <td> 글 내 용 : </td>
+		  <td><textarea name="content" cols="65" rows="4"></textarea></td> <!-- 글내용 작성 -->
+		</tr>
+		</table><br><br>
+		
+		<input type="submit" value="등록하기" style="background-color: lightgrey; width:100px; height: 50px;"> <!-- 데이터베이스에 등록 -->
+		<input type="reset" value="다시쓰기" style="background-color: lightgrey; width:100px; height: 50px;">
+		</form>
+		</center>
+		
+		
+		</body>
+		</html>
