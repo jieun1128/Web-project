@@ -20,7 +20,7 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-
+	
   </head>
   <body>
 
@@ -30,49 +30,72 @@
 
 	 String userID = "", title = "", content = "";
 	 int agree=0, disagree=0;
-     Connection conn = null;
-	 Statement stmt = null;
-	 ResultSet rs = null;
+	 int userAgree=0;
 	 
 	 String board="notice";
 	 session.setAttribute("board", board);
 	 int tableID = Integer.parseInt(request.getParameter("tableID"));
 	 String id = (String)session.getAttribute("id");
 	 
+	Connection conn = null;
+	Statement stmt=null,stmt1 = null;
+	ResultSet rs=null, rs1 = null;
+	 
 	 try {
-               Class.forName("com.mysql.jdbc.Driver");
-               String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
-               conn = DriverManager.getConnection(url, "root", "0000");
-               stmt = conn.createStatement();
-               String sql = "select * from notice where tableID = " + tableID;
-               rs = stmt.executeQuery(sql);
+		 	 Class.forName("com.mysql.jdbc.Driver");
+		     String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
+		     conn = DriverManager.getConnection(url, "root", "0000");
+			 stmt = conn.createStatement();
+			 stmt1 = conn.createStatement();
+             String sql = "select * from notice where tableID = " + tableID;
+        	 String sql1 = "select * from notice_agree where tableID="+tableID+" AND userID='"+id +"'";
+        	 rs = stmt.executeQuery(sql);      
+        	 rs1 = stmt1.executeQuery(sql1);
          }
          catch(Exception e) {
                out.println("DB 연동 오류입니다. : " + e.getMessage());
          } 
 
-         while(rs.next())  {
-	       userID = rs.getString("userID");
-	       title = rs.getString("title");
-	       content = rs.getString("content");
-	       agree = rs.getInt("agree");
-	       disagree = rs.getInt("disagree");
+	 while(rs.next()){
+      userID = rs.getString("userID");
+      title = rs.getString("title");
+      content = rs.getString("content"); 
+      agree = rs.getInt("agree");
+      disagree = rs.getInt("disagree");
 	 }
+	 if(rs1==null) userAgree=0;
+	 else {
+		 while(rs1.next()) {
+    	 userAgree = rs1.getInt("agree");
+    	 }
+	 }
+        
     %>     
     <center>
      <br><br><br>
 	<h2><%= title %></h2>
     <br>
         작성자: <%= userID %> <br>
-    <%
-    int like=0; // 동의 비동의 눌렀는지
-    int disliked=0;
-    %>
-    <input type="image" src="agree.png" style="width: 50px; height: 50px;" onClick="agree_clicked(like, dislike);"> 
-    <input type="image" src="disagree.png" style="width: 50px; height: 50px;"  onClick="disagree_clicked(like, dislike);"> <br>
+<% 
+String style1= "grey_agree.png", style2="grey_disagree.png";
+if(userAgree==1) style1="agree.png";
+else if(userAgree==-1) style2="disagree.png";
+%>
 
-       동의  : <%= agree %> | 비동의 : <%= disagree %>
-           
+<!-- 공감 비공감 버튼 -->
+    
+    <img src=<%=style2%> style="width:70px; height:70px; float:right;"id="disagree">
+	<img src=<%=style1%> style="width:70px; height:70px; float:right;  margin-right:15px;" id="agree">
+	<!-- 버튼 클릭시 notice-read.js 파일의 event 실행됨. 실행된 결과 반영하기 위해 현재시간 불러오는 파라미터 사용함 -->
+	<br><br><br>
+	
+<form action="notice-read-db.jsp" method="post"> 
+	<input type="hidden" id="l_hidden" name="l_hidden" value=<%=userAgree%>>	<!-- 공감/비공감 정보. 공감은 1 비공감은-1 둘다아니면 0-->
+	<div style="float:right;"> 
+	동의  : <input type="number" id="l_agree" name="l_agree" value=<%=agree%> style="width:50px" readonly>  
+	비동의 : <input type="number" id="l_disagree" name="l_disagree" value=<%=disagree%> style="width:50px" readonly> </div>
+  	
+<br><br><br>
     <div class="line"></div>
 
 	<div style="background-color:#F0E6FD ; color:black; width:60%; height: 400px; align: center;">
@@ -85,8 +108,14 @@
      <a href="board-modify.jsp?tableID=<%=tableID%>"> <button>게시글 수정</button> </a>    
 
     <a href="board-delete-db.jsp?tableID=<%=tableID%>"> <button>게시글 삭제 </button> </a>
-<% } %>    
-    <a href="notice.jsp"> <button>게시글 목록 보기 </button></a>
+<% } %>   
+
+
+	<input type="hidden" name="tableID" value=<%=tableID%>>
+	<input type="hidden" name="id" value="<%=id%>">	
+   <input type="submit" value="게시글 목록 보기">
+</form>  
+
   </center>
         </div>
 	<%
@@ -117,12 +146,12 @@
                     <a href="notice.jsp?id=<%=id %>">공지글</a>
                 </li>
                 <li>
-                    <a href="main.jsp?id=<%=id %>">홈화면</a>
+                    <a href="main.jsp?id=<%= id %>">홈화면</a>
                 </li>
             </ul>
 			<ul class="list-unstyled CTAs">
                 <li>
-                    <a href = "mypage.jsp?id=<%=id %>" class="download">마이페이지</a>
+                 	<a href = "mypage.jsp?id=<%= id%>" class="download">마이페이지</a>              
                 </li>
             </ul>
 
@@ -140,6 +169,58 @@
     <!-- jQuery Custom Scroller CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$('#agree').click(function(){
+			var disagree= $("#disagree").attr('src'); // 게시글의 비공감 클릭여부 disagree.png이면 공감함
+			var agree= $(this).attr('src'); // 게시글의 공감 클릭여부 agree.png이면 공감함
+			var aCnt = $("#l_agree").val(); // 게시글의 공감 개수
+			 // 공감과 비공감 int형으로
+		if(disagree=="disagree.png") { // 이미 비공감을 눌렀는데 공감버튼 누른 경우
+			alert("이미 비공감을 눌렀습니다.");		
+			return;
+		}
+		else if(agree=="grey_agree.png") {	// 공감할 경우
+			$(this).attr("src", "agree.png");	
+			aCnt++;
+			$("#l_agree").val(aCnt);
+			$("#l_hidden").val(1);
+		}
+		else {	// 공감 취소
+			$(this).attr("src", "grey_agree.png");
+			aCnt--;
+			$("#l_agree").val(aCnt);
+			$("#l_hidden").val(0);
+		}	
+	});
+	$('#disagree').click(function(){
+		var disagree= $(this).attr('src'); // 게시글의 비공감 클릭여부 disagree.png이면 공감함
+		var agree= $("#agree").attr('src'); // 게시글의 공감 클릭여부 agree.png이면 공감함
+		var dCnt = $("#l_disagree").val(); // 게시글의 비공감 개수
+		dCnt = parseInt(dCnt); 
+		if(agree=="agree.png") { // 이미 공감을 눌렀는데 비공감버튼 누른 경우
+			alert("이미 공감을 눌렀습니다.");		
+			return;
+		}
+		else if(disagree=="grey_disagree.png") {	// 비공감할 경우
+			$(this).attr("src", "disagree.png");
+			dCnt++;
+			$("#l_disagree").val(dCnt);
+			$("#l_hidden").val(-1);
+		}
+		else {	// 비공감 취소
+			$(this).attr("src", "grey_disagree.png");
+			dCnt--;
+			$("#l_disagree").val(dCnt);
+			$("#l_hidden").val(0);
+		}	
+	});
+	});	
+	</script>           
+
+	
     <script type="text/javascript">
         $(document).ready(function () {
             $("#sidebar").mCustomScrollbar({

@@ -83,25 +83,59 @@ left : 50px;
     </header>
       	<%String id = (String)session.getAttribute("id");// 변경 / 변경  %>
         <content>
+<%
+/* 각각의 cnt, stmt, rs, sql 뒤에 붙은 B와 C는 각각 B(notice-board:공지물) C(complain:민원글)과 관련*/
+int cntB=1, cntC=1; // 게시물 5개만 띄워주기위한 카운트
+Connection conn = null;
+Statement stmtB = null, stmtC=null;
+ResultSet rsB = null, rsC=null;
+String sqlB, sqlC;
+int tableID;
+
+try {
+      Class.forName("com.mysql.jdbc.Driver");
+      String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";
+      conn = DriverManager.getConnection(url, "root", "0000");
+      stmtB = conn.createStatement();
+      stmtC = conn.createStatement();
+      sqlB = "select * from notice order by agree desc ";
+      sqlC = "select * from complain order by agree desc ";
+
+      rsB = stmtB.executeQuery(sqlB);
+      rsC = stmtC.executeQuery(sqlC);
+}catch(Exception e) {
+      out.println("DB 연동 오류입니다.  : " + e.getMessage());
+}
+   
+        
+%>
       <div id="board">
         <br><br>
         <h3> 공지 게시판 </h3>
         <table>
-          <tr>
-            <td> 리스트항목1 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목2 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목3 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목4 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목5 </td>
-          </tr>
+         <tr style="background-color:Lightgray; height:40px;">
+                   <td align="center" width="30">글번호</td>
+                   <td align="center" width="50">글쓴이</td>
+                   <td align="center"width="100">글제목</td>
+                   <td align="center" width="30">공감수</td>
+                   <td align="center" width="30">비공감수</td>
+         </tr>
+        <%
+        while(rsB.next() && cntB<6) {
+        	 tableID = Integer.parseInt(rsB.getString("tableID")); 	 
+        %>
+    	  <tr style="background-color:white; color: black; height:30px;">
+             <td align="center"><%= cntB %> </td>
+             <td align="left"><%=rsB.getString("userID") %></td>
+             <td align="left">
+               <a href="complain-read.jsp?tableID=<%=rsB.getString("tableID") %>"><%=rsB.getString("title") %></a>
+             </td>
+             <td align="center"><%= rsB.getInt("agree") %></td>	 <!-- int형정보 agree, disagree -->
+      		 <td align="center"><%= rsB.getInt("disagree") %></td>
+            </tr>
+        <%
+        cntB++;
+        } %>
         </table> <br>
           <a href="notice.jsp?id=<%= id %>"><input type="button" value="공지 게시판 바로가기"></a>
 
@@ -110,23 +144,31 @@ left : 50px;
       <div id="board2">
         <br><br>
         <h3> 민원 게시판 </h3>
-        <table>
-          <tr>
-            <td> 리스트항목1 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목2 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목3 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목4 </td>
-          </tr>
-          <tr>
-            <td> 리스트항목5 </td>
-          </tr>
-        </table> <br>
+    	<table>
+         <tr style="background-color:Lightgray; height:40px;">
+                   <td align="center" width="30">글번호</td>
+                   <td align="center" width="50">글쓴이</td>
+                   <td align="center"width="100">글제목</td>
+                   <td align="center" width="30">공감수</td>
+                   <td align="center" width="30">비공감수</td>
+         </tr>
+        <%
+        while(rsC.next() && cntC<6) {
+        	 tableID = Integer.parseInt(rsC.getString("tableID")); 	 
+        %>
+    	  <tr style="background-color:white; color: black; height:30px;">
+             <td align="center"><%= cntC %> </td>
+             <td align="left"><%=rsC.getString("userID") %></td>
+             <td align="left">
+               <a href="complain-read.jsp?tableID=<%=rsC.getString("tableID") %>"><%=rsC.getString("title") %></a>
+             </td>
+             <td align="center"><%= rsC.getInt("agree") %></td>	 <!-- int형정보 agree, disagree -->
+      		 <td align="center"><%= rsC.getInt("disagree") %></td>
+            </tr>
+        <%
+        cntC++;
+        } %>
+        </table>  <br>
          <a href="complain.jsp?id=<%= id %>"><input type="button" value="민원 게시판 바로가기"></a>
       </div>
     </content>

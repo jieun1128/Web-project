@@ -40,11 +40,10 @@
 
             <div class="line"></div>
             <center>
-                <h1><b>게시글 목록 보기</b></h1> <br><br>
- 	    
-	            <input type="radio" name="sort_check" value="recent" checked="checked" > 최신순
-                <input type="radio" name="sort_check" value="agree" > 공감순
-              
+     
+                <h1><b>게시글 목록 보기</b></h1> <br>
+            
+
                  <table border="1" align="center" width="603px;">
 
                  <tr style="background-color:Lightgray;">
@@ -57,14 +56,9 @@
             
            
 			<%
+			
 			String id = (String)session.getAttribute("id");   
-		
-		 	String radioValue = request.getParameter("sort_check");
-			String selectsql;	// 게시물 순서 선택에 따른 select문
-	  		if(radioValue=="recent")	selectsql="select * from notice order by tableID asc";  
-	  		else selectsql = "select * from notice order by agree desc tableID asc;";
-	  	
-	  
+
     		int tableID;
       		int rownum=0;
       		Connection conn = null;
@@ -72,12 +66,14 @@
      		String sql = null;
       		ResultSet rs = null;
       		
+			sql="select * from notice order by agree desc";
+			
+			
       try{
     	  Class.forName("com.mysql.jdbc.Driver");
     	  String url = "jdbc:mysql://localhost:3306/dormitory?serverTimezone=UTC";//localhost:3306/dormitory?serverTimezone=UTC"; // 바꾸기 
     	  conn = DriverManager.getConnection(url,"root","0000"); // 바꾸기 
     	  stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-    	  sql="select * from notice order by tableID asc";
     	  rs = stmt.executeQuery(sql);
       }
       
@@ -100,8 +96,8 @@
              <td align="left">
                <a href="notice-read.jsp?tableID=<%=rs.getString("tableID")%>" style="width:400;"><%=rs.getString("title") %></a>
              </td>
-             <td align="center"><%= rs.getString("agree") %></td>
-      		 <td align="center"><%= rs.getString("disagree") %></td>
+             <td align="center"><%= rs.getInt("agree") %></td>
+      		 <td align="center"><%= rs.getInt("disagree") %></td>
             </tr>
         
       <%
@@ -182,6 +178,7 @@
             $('#dismiss, .overlay').on('click', function () {
                 $('#sidebar').removeClass('active');
                 $('.overlay').removeClass('active');
+                
             });
 
             $('#sidebarCollapse').on('click', function () {
