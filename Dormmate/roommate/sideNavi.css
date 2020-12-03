@@ -1,0 +1,143 @@
+/*
+    DEMO STYLE
+*/
+
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"; /* 외부 폰트 불러오기 */
+body {/* 전체적으로 적용할 폰트, 배경색, 글자색, 너비,높이를 지정한다. */
+    font-family: 'Poppins', sans-serif; 
+    background-color: #7F539B;
+    color : white;
+    width : 100%;
+    height : 100%;
+}
+
+ a,
+a:hover,
+a:focus {	/* a 태그 글자는 body와 같이, 글자는 일반 글자처럼, 변화는 0.3초안에  */
+    color: inherit;		
+    text-decoration: none;  
+    transition: all 0.3s;
+}
+
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+#sidebar { /* 메뉴 사이드바 */
+    width: 250px;   			/* 너비 */
+    position: fixed;			/* 위치는 고정 */
+    top: 0;						/* 맨 위부터 시작 */
+    left: -250px;				/* 처음에는 왼쪽 안보이는 곳이 위치하게 하기 */
+    height: 100vh;				/* 높이 */
+    z-index: 999;				/* 다른 어떤 레이어보다도 위에 위치하게 */
+    background: #7386D5;		/* 배경색 */
+    color: #fff;				/* 글자색 */
+    transition: all 0.3s;		/* 변화는 0.3초안에 */
+    overflow-y: scroll;			/* 위아래 내용이 넘칠경우 스크롤 생성 */
+}
+
+#sidebar.active {	/* 사이드바 활성화 시 왼쪽 시작을 0으로 지정 */
+    left: 0;
+}
+
+#dismiss {	/* 화살표 아이콘이 들어갈 곳 */
+    width: 35px;		/* 너비 */
+    height: 35px;		/* 높이 */
+    line-height: 35px;	/* 줄 높이 */
+    text-align: center;	/* 중앙에 위치 */
+    background: #7386D5;	/* 배경 색 */
+    position: absolute;		/* 위치 설정 */
+    top: 10px;				/* 위에서 10px 떨어진 곳 */
+    right: 10px;			/* 오른쪽 끝에서 10px 떨어진 곳 */
+    cursor: pointer;		/* 커서가 올라갔을 때의 마우스 모양 변화 */
+    -webkit-transition: all 0.3s;	/* 밑의 3개는 변화에 관해서 */
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+#dismiss:hover {	/* 마우스 포인터가 위에 올라갔을 때 */
+    background: #fff; /* 배경은 흰색 */
+    color: #7386D5;	/* 글자색은 파란색 */
+}
+
+
+#sidebar .sidebar-header {	/* 사이드바의 헤더 (동국 기숙사 들어갈 자리) */
+    padding: 20px;	
+    background: #6d7fcc;
+}
+
+#sidebar ul.components {	/* 목록 컴포넌트에서 padding과 경계선 설정 */
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+
+
+#sidebar ul li a {  /* sidebar안의 a태그의 설정 */
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#sidebar ul li a:hover { /* a 태그에 마우스를 올렸을때 */
+    color: #7386D5;
+    background: #fff;
+}
+
+ #sidebar ul li.active>a,
+a[aria-expanded="true"] {  /* 사이드바 목록에 해당하는 페이지 들어갔을 경우 눈에띄게 하기 위하여 */
+    color: #fff;
+    background: #6d7fcc;
+}
+
+ul.CTAs {	/* 마이페이지 버튼 놓을 자리 ul 설정 */
+    padding: 20px;
+}
+
+ul.CTAs a {		/* 마이페이지 버튼 놓을 자리 ul 설정 */
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+a.download {		/* 마이페이지 버튼 설정 */
+    background: #fff;
+    color: #7386D5;
+}
+
+
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content { /* 게시글 div id */
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+#content2{ /* mypage, 룸메찾기 div id */
+    width: 100%;
+    padding: 20px;
+    min-height: 200vh;
+    position: absolute;
+   	height : 100%;
+    top: 0;
+    left : 400px;
+    
+}
+#user{	/* 룸메 찾기에서 룸메 찾는 부분의 div id */
+    width: 400px;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+}
