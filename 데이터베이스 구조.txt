@@ -87,7 +87,6 @@ mysql> desc notice;
 본인 세부정보
 create table memberInfo(
     -> washing INT,		//일주일에 씻는 횟수
-    -> drinking INT,		//한달에 음주 횟수
     -> noise INT,		//시끄러운 정도
     -> cleaning INT,		//일주일에 청소 횟수
     -> sleptOut INT,		//한달에 외박 횟수
